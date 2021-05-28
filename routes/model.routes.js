@@ -15,6 +15,7 @@ router.post(
         check('rfid', 'Неверное значение RFID').isLength({ min: 10, max: 10 })
     ],
     async (req, res) => {
+        console.log('Register model');
         try {
             const validationResultErrors = validationResult(req);
             if ( !validationResultErrors.isEmpty() ) return res.status(400).json({ message: validationResultErrors.array()[0] });
