@@ -11,7 +11,7 @@ const Devices = [
         masterTimeStamp: null,
         slaveTimeStamp: null,
         status: 'OFF',
-        value: '0123456789'
+        value: null
     },
     {
         name: 'referee_1',
@@ -116,8 +116,8 @@ router.post(
         const device = Devices.find(item => item.masterId == req.profileId);
         if ( device ) {
             device.masterTimeStamp = Date.now();
-            //device.status = 'READ';
-            device.status = 'VERIFY';
+            device.status = 'READ';
+            //device.status = 'VERIFY';
             return res.json({ status: device.status });
         }
         
