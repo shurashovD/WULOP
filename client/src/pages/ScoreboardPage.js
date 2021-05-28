@@ -8,8 +8,9 @@ export const ScoreboardPage = () => {
     const [result, setResult] = useState([]);
     const [listner, setListner] = useState(false);
     const [step, setStep] = useState('OFF');
+    const [task, setTask] = useState('0');
 
-    const getResult = useCallback (async (task) => {
+    const getResult = useCallback (async () => {
         try {
             const msgFromSrv = await request('/api/model/get-score', 'POST', {task}, { Authorization: `Bearer ${auth.token}` });
             setResult(msgFromSrv.result);
@@ -18,24 +19,54 @@ export const ScoreboardPage = () => {
             setStep('OFF');
         }
         setTimeout(() => {
-            getResult(task);
+            getResult();
         }, 10000);
-    }, [request, auth.token]);
+    }, [request, auth.token, task]);
 
     useEffect(() => {
         if ( listner ) return;
         window.addEventListener('keypress', event => {
-            if ( event.key === 'q' ) setStep('I-LIPS');
-            if ( event.key === 'Q' ) setStep('LIPS');
-            if ( event.key === 'w' ) setStep('I-ARROW');
-            if ( event.key === 'W' ) setStep('ARROW');
-            if ( event.key === 'e' ) setStep('I-FEATH');
-            if ( event.key === 'E' ) setStep('FEATH');
-            if ( event.key === 'r' ) setStep('I-BLADING');
-            if ( event.key === 'R' ) setStep('BLADING');
-            if ( event.key === 't' ) setStep('I-HAIRS');
-            if ( event.key === 'T' ) setStep('HAIRS');
-        })
+            if ( event.key === 'q' ) {
+                setStep('I-LIPS');
+                setTask(1);
+            }
+            if ( event.key === 'Q' ) {
+                setStep('LIPS');
+                setTask(1);
+            }
+            if ( event.key === 'w' ) {
+                setStep('I-ARROW');
+                setTask(2);
+            }
+            if ( event.key === 'W' ) {
+                setStep('ARROW');
+                setTask(2);
+            }
+            if ( event.key === 'e' ) {
+                setStep('I-FEATH');
+                setTask(3);
+            }
+            if ( event.key === 'E' ) {
+                setStep('FEATH');
+                setTask(3);
+            }
+            if ( event.key === 'r' ) {
+                setStep('I-BLADING');
+                setTask(4);
+            }
+            if ( event.key === 'R' ) {
+                setStep('BLADING');
+                setTask(4);
+            }
+            if ( event.key === 't' ) {
+                setStep('I-HAIRS');
+                setTask(5);
+            }
+            if ( event.key === 'T' ) {
+                setStep('HAIRS');
+                setTask(5);
+            }
+        });
         document.querySelector('body').style.cursor = 'none';
         document.querySelector('body').requestFullscreen();
         setListner(true);
