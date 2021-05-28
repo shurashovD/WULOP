@@ -15,16 +15,15 @@ router.post(
         check('rfid', 'Неверное значение RFID').isLength({ min: 10, max: 10 })
     ],
     async (req, res) => {
-        console.log('Register model');
         try {
             const validationResultErrors = validationResult(req);
             if ( !validationResultErrors.isEmpty() ) return res.status(400).json({ message: validationResultErrors.array()[0] });
 
             const {team, task, rfid} = req.body;
-            const candidate = await Model.find({ team, task, completed: false }).exac();
+            const candidate = await Model.findOne({ team, task, completed: false });
             if ( candidate ) return res.status(400).json({ message: 'Участник уже зарегистрирован в текущем задании' });
 
-            const rfidCandidate = await Model.find({ rfid, completed: false }).exac();
+            const rfidCandidate = await Model.findOne({ rfid, completed: false });
             if ( rfidCandidate ) return res.status(400).json({ message: 'Метка занята' });
 
             const model = new Model({ team, task, rfid });
