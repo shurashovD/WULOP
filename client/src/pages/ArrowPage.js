@@ -51,7 +51,7 @@ export const ArrowPage = () => {
     const auth = useContext(AuthContext);
     const toast = useToast();
     const history = useHistory();
-    const [scores, setScores] = useState(new Object(Obj.list));
+    const [scores, setScores] = useState(Obj.list);
     const [finnaly, setFinnaly] = useState(0);
     const [modelId, setModelId] = useState(null);
     const {loading, request} = useHttp();
@@ -62,7 +62,7 @@ export const ArrowPage = () => {
             const rfid = msgFromSrv.value;
             const data = await request('/api/model/get-model', 'POST', { rfid }, { Authorization: `Bearer ${auth.token}` });
             if ( data?.model ) {
-                const model = JSON.parse(data.model)[0];
+                const model = JSON.parse(data.model);
                 setModelId(model._id);
                 return;
             }
@@ -72,7 +72,7 @@ export const ArrowPage = () => {
             toast(e);
             history.push('/');
         }
-    }, [request, auth.token, toast]);
+    }, [request, auth.token, toast, history]);
 
     const changeHandler = event => {
         const key = event.target.getAttribute('data-key');
@@ -99,7 +99,7 @@ export const ArrowPage = () => {
         catch (e) {
             toast( e );
         }
-    }, [modelId, finnaly, history]);
+    }, [modelId, finnaly, history, auth.token, request, toast]);
 
     const items = Obj.list.map((item, index) => {
         return(
@@ -130,7 +130,7 @@ export const ArrowPage = () => {
         window.M.Collapsible.init(list, {});
         window.M.Collapsible.getInstance(list);
         getStatus();
-    }, []);
+    }, [getStatus]);
 
     return(
         <div>

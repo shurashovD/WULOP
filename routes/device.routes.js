@@ -75,6 +75,15 @@ const Devices = [
         slaveTimeStamp: null,
         status: 'OFF',
         value: null
+    },
+    {
+        name: 'photo',
+        masterId: '60aa8f43602e693664ea06ec',
+        slaveId: '60aa8f43602e693664ea06ea',
+        masterTimeStamp: null,
+        slaveTimeStamp: null,
+        status: 'OFF',
+        value: null
     }
 ];
 

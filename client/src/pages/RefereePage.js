@@ -42,7 +42,7 @@ export const RefereePage = () => {
             const rfid = msgFromSrv.value;
             const data = await request('/api/model/get-model', 'POST', { rfid }, { Authorization: `Bearer ${auth.token}` });
             if ( data?.model ) {
-                const model = JSON.parse(data.model)[0];
+                const model = JSON.parse(data.model);
                 let path = null;
                 switch (model.task) {
                     case '1' : {

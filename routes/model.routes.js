@@ -44,7 +44,7 @@ router.post(
     async (req, res) => {
         try {
             const {rfid} = req.body;
-            const candidate = await Model.find({ rfid, completed: false });
+            const candidate = await Model.findOne({ rfid, completed: false });
             if ( !candidate ) return res.status(400).json({ message: 'Ошибка получения участника' });
             res.json({ model: JSON.stringify(candidate) });
         }
@@ -93,11 +93,11 @@ router.post(
                 const scores = [];
                 for ( let [key, value] of model.scores ) {
                     scores.push({
-                        referee: profiles.find(profile => profile._id == key),
+                        referee: profiles.find(profile => profile._id == key).type,
                         score: value
                     });
                 }
-                return { name: model.team, scores };
+                return { name: model.team, scores, hyhienical: model.hyhienical };
             });
 
             res.json({ result });
@@ -105,6 +105,40 @@ router.post(
         catch (e) {
             console.log(e);
             res.status(500).json({ result: [] });
+        }
+    }
+);
+
+router.post(
+    '/get-models',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const {task} = req.body;
+            const models = await Model.find({ task, completed: false });
+            res.json({ models });
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
+    '/set-hyhienic',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const {modelId, score} = req.body;
+            const model = await Model.findById(modelId);
+            if ( !model ) res.status(400).json({ message: 'Участник не определен' });
+
+            model.hyhienical = parseInt(score);
+            await model.save();
+            res.json({ success: true });
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
         }
     }
 );

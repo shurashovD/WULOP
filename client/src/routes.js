@@ -22,6 +22,7 @@ export const useRoutes = deviceType => {
     if ( deviceType ) {
         const deviceSplit = device.split('-');
         if ( (deviceSplit[0] === 'REFEREE') && (deviceSplit[1] === 'TABLE') ) device = 'REFEREE-TABLE';
+        if ( (deviceSplit[0] === 'REFEREE') && (deviceSplit[1] === 'RFID') ) device = 'REFEREE-RFID';
     }
     switch (device) {
         case 'ADMINISTRATOR' : return (
@@ -54,7 +55,7 @@ export const useRoutes = deviceType => {
                 <Redirect to="/registration" />
             </Switch>
         );
-        case 'PhotoPage' : return (
+        case 'PHOTO' : return (
             <Switch>
                 <Route path="/photosession" exact>
                     <PhotoPage />
@@ -62,7 +63,7 @@ export const useRoutes = deviceType => {
                 <Redirect to="/photosession" />
             </Switch>
         );
-        case 'HyhienicPage' : return (
+        case 'HYHIENIC' : return (
             <Switch>
                 <Route path="/hyhienical-referee" exact>
                     <HyhienicPage />

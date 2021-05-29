@@ -11,11 +11,11 @@ import errorImg from '../img/Rfid-error.jpg';
 export const RegisterRfidPage = () => {
     const toast = useToast();
     const auth = useContext(AuthContext);
-    const startMessage = 'RFID-терминал регистрации участников';
+    const startMessage = 'RFID-терминал';
     const readMessage = 'Пожалуйста, приложите карту';
     const verifyMessage = 'Карта прочитана. Пожалуйста, ждите...';
     const errorMessage = 'Системная ошибка';
-    const successMessage = 'Карта привязана к участнику';
+    const successMessage = 'Выполнено';
     const [message, setMessage] = useState(startMessage);
     const [imgSrc, setImgSrc] = useState(startImg);
     const [preloader, setPreloader] = useState(false);

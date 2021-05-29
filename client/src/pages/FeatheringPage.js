@@ -11,35 +11,43 @@ const Obj = {
         list: [
             {
                 test: 'Гармоничность образа',
-                dect: 'Оценивается общий вид модели: опрятность, чистота, ухоженность. Также оценивается на сколько конкурсант подчеркнул индивидуальность. Правильно подобранное визажное решение.'
+                dect: 'Оценивается общий вид модели: опрятность, чистота, ухоженность. Также оценивается на сколько конкурсант подчеркнул индивидуальность. Правильно подобранное визажное решение.',
+                value: 0
             },
             {
                 test: 'Форма',
-                dect: 'Оценивается насколько участник подобрал ширину и длину стрелочки, а также соответствия формы стрелки/растушёвки анатомическим особенностям строения глаз/лица.'
+                dect: 'Оценивается насколько участник подобрал ширину и длину стрелочки, а также соответствия формы стрелки/растушёвки анатомическим особенностям строения глаз/лица.',
+                value: 0
             },
             {
                 test: 'Симметрия',
-                dect: 'Оценивается насколько участник смог выровнять природную симметрию исходя из анатомических исходных данных модели.'
+                dect: 'Оценивается насколько участник смог выровнять природную симметрию исходя из анатомических исходных данных модели.',
+                value: 0
             },
             {
                 test: 'Изящность',
-                dect: 'Оценивается плавное истончение линии в хвостике и внутреннем углу глаза.'
+                dect: 'Оценивается плавное истончение линии в хвостике и внутреннем углу глаза.',
+                value: 0
             },
             {
                 test: 'Градиент',
-                dect: 'Оценивается насколько профессионально и плавно выполнен переход от светлых частей век к более тёмным.'
+                dect: 'Оценивается насколько профессионально и плавно выполнен переход от светлых частей век к более тёмным.',
+                value: 0
             },
             {
                 test: 'Прокрас межресничного пространства',
-                dect: 'Оценивается равномерное плотное окрашивание всей межресничной зоны.'
+                dect: 'Оценивается равномерное плотное окрашивание всей межресничной зоны.',
+                value: 0
             },
             {
                 test: 'Цвет',
-                dect: 'Оценивается гармоничное сочетание выбранных цветов пигмента по тону кожи модели. Разрешенные цвета для использования - чёрный, серый и коричневый.'
+                dect: 'Оценивается гармоничное сочетание выбранных цветов пигмента по тону кожи модели. Разрешенные цвета для использования - чёрный, серый и коричневый.',
+                value: 0
             },
             {
                 test: 'Травматизация',
-                dect: 'Оценивается наличие засаженных точек, отека, проколов в виде тире, явное углубление, выходы за контур губ. <b>Чем меньше этих признаков тем выше балл.</b>'
+                dect: 'Оценивается наличие засаженных точек, отека, проколов в виде тире, явное углубление, выходы за контур губ. Чем меньше этих признаков тем выше балл.',
+                value: 0
             },
         ]
     }
@@ -48,7 +56,7 @@ export const FeatheringPage = () => {
     const auth = useContext(AuthContext);
     const toast = useToast();
     const history = useHistory();
-    const [scores, setScores] = useState(new Object(Obj.list));
+    const [scores, setScores] = useState(Obj.list);
     const [finnaly, setFinnaly] = useState(0);
     const [modelId, setModelId] = useState(null);
     const {loading, request} = useHttp();
@@ -59,7 +67,7 @@ export const FeatheringPage = () => {
             const rfid = msgFromSrv.value;
             const data = await request('/api/model/get-model', 'POST', { rfid }, { Authorization: `Bearer ${auth.token}` });
             if ( data?.model ) {
-                const model = JSON.parse(data.model)[0];
+                const model = JSON.parse(data.model);
                 setModelId(model._id);
                 return;
             }
@@ -69,7 +77,7 @@ export const FeatheringPage = () => {
             toast(e);
             history.push('/');
         }
-    }, [request, auth.token, toast]);
+    }, [request, auth.token, toast, history]);
 
     const changeHandler = event => {
         const key = event.target.getAttribute('data-key');
@@ -97,7 +105,7 @@ export const FeatheringPage = () => {
         catch (e) {
             toast( e );
         }
-    }, [modelId, finnaly, history]);
+    }, [modelId, finnaly, history, auth.token, request, toast]);
 
     const items = Obj.list.map((item, index) => {
         return(
@@ -128,7 +136,7 @@ export const FeatheringPage = () => {
         window.M.Collapsible.init(list, {});
         window.M.Collapsible.getInstance(list);
         getStatus();
-    }, []);
+    }, [getStatus]);
 
     return(
         <div>
