@@ -13,7 +13,7 @@ export const ScoreboardPage = () => {
     const getResult = useCallback (async () => {
         try {
             const msgFromSrv = await request('/api/model/get-score', 'POST', {task}, { Authorization: `Bearer ${auth.token}` });
-            setResult(msgFromSrv.result);
+            if ( msgFromSrv.result.length !== 0 ) setResult(msgFromSrv.result);
         }
         catch (e) {
             setStep('OFF');
