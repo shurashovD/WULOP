@@ -44,6 +44,7 @@ app.use('/api/device', require('./routes/device.routes'));
 app.use('/api/model', require('./routes/model.routes'));
 
 app.get('*', (req, res) => {
+    console.log('First get');
     const pathObj = path.parse(req.params['0']);
     if ( pathObj.dir === '/uploads' ) {
         return res.sendFile(path.join(__dirname, 'uploads', pathObj.base));
@@ -51,9 +52,9 @@ app.get('*', (req, res) => {
 });
 
 if ( process.env.NODE_ENV === 'production' ) {
-    console.log('Production');
     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
     app.get('*', (req, res) => {
+        console.log('GET');
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
 }
