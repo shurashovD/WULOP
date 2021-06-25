@@ -1,86 +1,95 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useHttp } from '../hooks/http.hook';
-import { useToast } from '../hooks/toast.hook';
+import React, { useContext, useEffect } from 'react';
+import { NavBar } from '../components/Navbar';
+import { HyhienicalContext } from '../context/hyhienical/hyhienicalContext';
+import { Loader } from '../components/Loader';
+import { TasksContext } from '../context/TasksContext';
+import microphoneImg from '../img/microphone.svg';
 
 export const HyhienicPage = () => {
-    const auth = useContext(AuthContext);
-    const toast = useToast();
-    const {request, loading} = useHttp();
-    const [task, setTask] = useState(1);
-    const [models, setModels] = useState([]);
-    const [modelId, setModelId] = useState(0);
-    const [score, setScore] = useState(0);
+    const tasks = useContext(TasksContext);
+    const { hyhienicState, initAudio, setNumber, setRecord, setHyhienicalScore, readyHandler } = useContext(HyhienicalContext);
+    const { number, model, modelLoading, record, updateRecord, audio, loading } = hyhienicState;
 
-    const Range = () => {
-        return(
-            <p className="range-field mt-5">
-                <input type="range" min={0} max={100} value={score} onChange={event => setScore(event.target.value)} />
-            </p>
-        );
+    const numberValidator = event => {
+        if ( event.key === 'Backspace' ) return;
+        if ( event.key === ' ' ) event.preventDefault();
+        if ( event.target.value.length === 3 ) event.preventDefault();
+        if ( (event.target.value.length === 0) && (event.key === '0') ) event.preventDefault();
+        if ( isNaN(event.key) ) event.preventDefault();
+
+        if ( (event.target.name === 'score') && (parseInt(event.target.value + event.key) > 100) ) {
+            event.preventDefault();
+            event.target.value = 100;
+        }
     }
 
-    const ModelsSelect = () => {
-        if ( models.length === 0 ) return null;
-
-        const options = models.map(item => {
-            return <option value={item._id} key={item._id}>{item.team}</option>
-        });
-
-        return(
-            <select className="browser-default" value={modelId} onChange={changeHandler} name="task">
-                <option value="0" disabled>Участник</option>
-                {options}
-            </select>
-        );
+    const recBtnHandler = () => {
+        record ? audio.stop() : audio.start();
+        setRecord();
     }
 
-    const changeHandler = event => {
-        setModelId(event.target.value);
-        setScore(models.find(item => item._id === event.target.value).hyhienical);
-    }
-
-    const submitHandler = useCallback( async () => {
-        try {
-            const msgFromSrv = await request('/api/model/set-hyhienic', 'POST', {modelId, score}, { Authorization: `Bearer ${auth.token}` });
-            if ( msgFromSrv?.success ) {
-                toast('Оценка сохранена');
-                setModelId(0);
-                setScore(0);
-                return;
-            }
-            throw new Error('Ошибка сохранения');
-        }
-        catch (e) {
-            toast(e);
-        }
-    }, [request, auth.token, toast, modelId, score]);
-
-    const getModels = useCallback( async () => {
-        try {
-            const msgFromSrv = await request('/api/model/get-models', 'POST', {task}, { Authorization: `Bearer ${auth.token}` });
-            setModels(msgFromSrv?.models ?? []);
-        }
-        catch (e) {}
-    }, [request, auth.token, task]);
-
-    useEffect(() => {
-        getModels();
-    }, [task, getModels]);
+    useEffect(initAudio, [initAudio]);
 
     return(
-        <div>
-            <select className="browser-default" value={task} onChange={event => setTask(event.target.value)} name="task">
-                <option value="0" disabled>Конкурсное задание</option>
-                <option value="1">Эффект губной помады</option>
-                <option value="2">Стрелка с прокрасом межресничного пространства и Растушевкой</option>
-                <option value="3">Растушевка</option>
-                <option value="4">Микроблейдинг</option>
-                <option value="5">Bолосковая техника</option>
-            </select>
-            <ModelsSelect />
-            { (modelId !== 0) && <Range /> }
-            { (modelId !== 0) && <button className="waves-effect waves-light btn-large mt-5" onClick={submitHandler} disabled={loading}>Сохранить результат {score}</button> }
+        <div className="container min-vh-100 d-flex flex-column justify-content-start">
+            { loading && <Loader /> }
+            <NavBar />
+            <p className="text-dark fw-bold text-center mt-4">Судья гигиенист</p>
+            <p className="text-dark text-center mt-3">Введите номер участника</p>
+            <div className="row">
+                <div className="col-2 mx-auto">
+                    <input
+                        type="text"
+                        className="form-control text-center"
+                        value={number}
+                        onKeyDown={numberValidator}
+                        onChange={setNumber}
+                    />
+                </div>
+            </div>
+            { !model && <p className="text-dark text-center mt-3">Участник не определен</p> }
+            { model && <p className="text-dark text-center fs-3 mt-3">Участник: №{model.number}. Категория: “{tasks[model.task-1].name}”</p> }
+            { model && <p className="text-dark text-center mt-4">Введите баллы</p> }
+            { model && (<div className="row ">
+                <div className="col-2 mx-auto">
+                    <input
+                        type="text"
+                        name="score"
+                        className="form-control text-center"
+                        value={model?.hyhienicalScore ?? 0}
+                        onKeyDown={numberValidator}
+                        onChange={setHyhienicalScore}
+                    />
+                </div>
+            </div>)}
+            { model && (<div className="row mt-4">
+                <div className="col-2 mx-auto">
+                    <button
+                        className="btn btn-primary btn-shadow text-white text-uppercase container"
+                        onClick={recBtnHandler}
+                    >
+                        { (record && !updateRecord) && <div className="spinner-grow spinner-grow-sm" /> }
+                        { (!record && !updateRecord) && <img src={microphoneImg} width="20" alt="record" /> }
+                        { updateRecord && <div className="spinner-border spinner-border-sm" /> }
+                    </button>
+                </div>
+            </div>) }
+            <div className="row mt-4">
+                { model?.hyhienicalComment && (<div className="col-6 mx-auto">
+                    <audio controls src={ model.hyhienicalComment } className="container" />
+                </div>) }
+            </div>
+            { modelLoading && <div className="spinner-border text-primary m-auto"></div> }
+            <div className="row mt-auto mb-3">
+                <div className="col-2 mx-auto">
+                    <button
+                        className="btn btn-primary btn-shadow text-white text-uppercase container"
+                        onClick={readyHandler}
+                    >
+                        Готово
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }

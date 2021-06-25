@@ -1,0 +1,103 @@
+$primary: #2AB0A2;
+$secondary: #4BC3B6;
+$dark: #0E6E6D;
+
+$box-shadow: 3px -2px 6px rgba(75, 195, 182, 0.37);
+
+$border-radius: 10px;
+
+$input-border-color: $primary;
+$input-border-width: 2px;
+$input-border-radius: 10px;
+$input-padding-y: 11px;
+$input-box-shadow: 3px -2px 6px rgba(75, 195, 182, 0.37);
+$input-color: $dark;
+$input-font-weight: 550;
+
+$btn-padding-y: 11px;
+$btn-padding-x: 33px;
+$btn-border-radius: 10px;
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+body {
+    background-image: url("./img/bgi.png");
+    background-size: 1735px 1495px;
+    background-position: -200px -180px;
+}
+
+.btn-shadow {
+    box-shadow: 2px 2px 5px #40A69B, -2px -2px 5px #56E0D1;
+}
+
+.lds-grid {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-grid div {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: dark;
+  animation: lds-grid 1.2s linear infinite;
+}
+.lds-grid div:nth-child(1) {
+  top: 8px;
+  left: 8px;
+  animation-delay: 0s;
+}
+.lds-grid div:nth-child(2) {
+  top: 8px;
+  left: 32px;
+  animation-delay: -0.4s;
+}
+.lds-grid div:nth-child(3) {
+  top: 8px;
+  left: 56px;
+  animation-delay: -0.8s;
+}
+.lds-grid div:nth-child(4) {
+  top: 32px;
+  left: 8px;
+  animation-delay: -0.4s;
+}
+.lds-grid div:nth-child(5) {
+  top: 32px;
+  left: 32px;
+  animation-delay: -0.8s;
+}
+.lds-grid div:nth-child(6) {
+  top: 32px;
+  left: 56px;
+  animation-delay: -1.2s;
+}
+.lds-grid div:nth-child(7) {
+  top: 56px;
+  left: 8px;
+  animation-delay: -0.8s;
+}
+.lds-grid div:nth-child(8) {
+  top: 56px;
+  left: 32px;
+  animation-delay: -1.2s;
+}
+.lds-grid div:nth-child(9) {
+  top: 56px;
+  left: 56px;
+  animation-delay: -1.6s;
+}
+@keyframes lds-grid {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.opacity {
+  opacity: .5;
+}

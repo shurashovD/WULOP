@@ -3,6 +3,8 @@ const AuthMiddleWare = require('../middleware/auth.middleware');
 const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
+const fs = require('fs');
+const path = require('path');
 
 const router = Router();
 
@@ -26,13 +28,19 @@ router.post(
             const rfidCandidate = await Model.findOne({ rfid, completed: false });
             if ( rfidCandidate ) return res.status(400).json({ message: 'Метка занята' });
 
-            const model = new Model({ team, task, rfid });
+            let number = 1;
+
+            const allModels = await Model.find();
+            if ( allModels?.length !== 0 ) {
+                number = allModels.sort((a, b) => b.number - a.number)[0].number + 1;
+            }           
+
+            const model = new Model({ team, task, rfid, number });
             await model.save();
 
-            res.json({ message: 'Участник успешно сохранен', success: true });
+            res.json({ number, success: true });
         }
         catch (e) {
-            console.log(e);
             res.status(500).json({ message: 'Что-то пошло не так...' });
         }
     }
@@ -55,20 +63,113 @@ router.post(
 );
 
 router.post(
+    '/get-model-by-number',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const {number} = req.body;
+            const candidate = await Model.findOne({ number });
+            if ( !candidate ) return res.status(400).json({ message: 'Ошибка получения участника' });
+            res.json({ model: JSON.stringify(candidate) });
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
+    '/insert-photo',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const {id, photoKey} = req.body;
+            const candidate = await Model.findById(id);
+            if ( !candidate ) return res.status(400).json({ message: 'Ошибка получения участника' });
+            
+            if ( req.file ) candidate[photoKey] = path.join('uploads', req.file.originalname);
+            else candidate[photoKey] = '';
+            await candidate.save();
+
+            const model = await Model.findById(id);
+            res.json({ model });
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
+    '/hyhienical-comment',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const candidate = await Model.findById(req.body.id);
+            if ( !candidate ) return res.status(400).json({ message: 'Ошибка получения участника' });
+            
+            if ( req.file ) candidate.hyhienicalComment = path.join('uploads', req.file.originalname);
+            else candidate.hyhienicalComment = '';
+            await candidate.save();
+
+            const model = await Model.findById(req.body.id);
+            res.json({ model: JSON.stringify(model) });
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
+    '/referee-comment',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            if ( req.file ) res.json({ path : path.join('uploads', req.file.originalname) });
+            else throw new Error();
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
+    '/get-photo',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const { fileName } = req.body;
+            res.sendFile(path.join(path.parse(__dirname).dir, '/uploads', fileName));
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
     '/save-score',
     AuthMiddleWare,
     async (req, res) => {
         try {
-            const {modelId, finnaly} = req.body;
+            const { modelId, amount, refereeId, refereeScores } = req.body;
             const model = await Model.findById(modelId);
             if ( !model ) return res.status(400).json({ message: 'Ошибка получения участника' });
 
-            if ( !model?.scores ) {
-                model.scores = new Map();
-                await model.save();
-            }
-            model.scores.set(req.profileId, finnaly);
-            if (model.scores.size == 7) model.completed = true;
+            if ( !Boolean(model?.scores) ) model.scores = [];
+            const refereeScoresIndex = model.scores.findIndex(item => item.refereeId == refereeId);
+            if ( refereeScoresIndex != -1 ) model.scores.splice(refereeScoresIndex, 1);
+
+            model.scores.push({
+                amount, refereeId,
+                refereeScores: JSON.parse(refereeScores)
+            });
+
+            if ( model.scores.length == 7 ) model.completed = true;
+
             await model.save();
 
             res.json({ success: true, message: 'Ваша оценка принята' });
@@ -90,14 +191,15 @@ router.post(
             const profiles = await Profile.find();
             
             const result = models.map(model => {
-                const scores = [];
-                for ( let [key, value] of model.scores ) {
-                    scores.push({
-                        referee: profiles.find(profile => profile._id == key).type,
-                        score: value
-                    });
-                }
-                return { name: model.team, scores, hyhienical: model.hyhienical };
+                const { team, scores, hyhienicalScore } = model;
+                const scoresResult = scores.map(score => {
+                    const { amount, refereeId } = score;
+                    return {
+                        referee: profiles.find(profile => profile._id == refereeId).descriptor,
+                        amount
+                    }
+                });
+                return { team, scoresResult, hyhienicalScore};
             });
 
             res.json({ result });
@@ -110,12 +212,26 @@ router.post(
 );
 
 router.post(
-    '/get-models',
+    '/get-models-by-task',
     AuthMiddleWare,
     async (req, res) => {
         try {
             const {task} = req.body;
             const models = await Model.find({ task, completed: false });
+            res.json({ models });
+        }
+        catch (e) {
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
+    '/get-models',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const models = await Model.find();
             res.json({ models });
         }
         catch (e) {
@@ -133,7 +249,7 @@ router.post(
             const model = await Model.findById(modelId);
             if ( !model ) res.status(400).json({ message: 'Участник не определен' });
 
-            model.hyhienical = parseInt(score);
+            model.hyhienicalScore = parseInt(score);
             await model.save();
             res.json({ success: true });
         }
