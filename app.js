@@ -43,7 +43,7 @@ app.use('/api/device', require('./routes/device.routes'));
 
 app.use('/api/model', require('./routes/model.routes'));
 
-app.get('*', (req, res) => {
+app.get('/uploads', (req, res) => {
     console.log('First get');
     const pathObj = path.parse(req.params['0']);
     if ( pathObj.dir === '/uploads' ) {
