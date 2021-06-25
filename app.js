@@ -53,11 +53,9 @@ app.get('/uploads', (req, res) => {
 if ( process.env.NODE_ENV === 'production' ) {
     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
     app.get('*', (req, res) => {
-        console.log('GET');
         console.log(req.params);
         const pathObj = path.parse(req.params['0']);
         if ( pathObj.dir === '/uploads' ) {
-            console.log('GET-uploads');
             return res.sendFile(path.join(__dirname, 'uploads', pathObj.base));
         }
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
