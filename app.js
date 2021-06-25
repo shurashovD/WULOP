@@ -44,7 +44,6 @@ app.use('/api/device', require('./routes/device.routes'));
 app.use('/api/model', require('./routes/model.routes'));
 
 app.get('/uploads', (req, res) => {
-    console.log('First get');
     const pathObj = path.parse(req.params['0']);
     if ( pathObj.dir === '/uploads' ) {
         return res.sendFile(path.join(__dirname, 'uploads', pathObj.base));
@@ -55,6 +54,7 @@ if ( process.env.NODE_ENV === 'production' ) {
     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
     app.get('*', (req, res) => {
         console.log('GET');
+        console.log(req.params);
         const pathObj = path.parse(req.params['0']);
         if ( pathObj.dir === '/uploads' ) {
             console.log('GET-uploads');
