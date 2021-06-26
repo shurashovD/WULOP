@@ -27,7 +27,7 @@ export const RefereeMain = () => {
                     disabled={ !model || (!Boolean(model?.beforePhoto) && !Boolean(model?.afterPhoto)) || ((model?.beforePhoto === '') && (model?.afterPhoto === '')) }
                     onClick={photoBtnHandler}
                 >
-                    Фото
+                    {dg('photo')}
                 </button>
             </div>
             <div className="row">
