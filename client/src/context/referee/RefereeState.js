@@ -10,7 +10,7 @@ import { useMicrophone } from "../../hooks/microphone.hook";
 
 export const RefereeState = ({children}) => {
     const auth = useContext(AuthContext);
-    const tasks = useContext(TasksContext);
+    const { tasks } = useContext(TasksContext);
     const { show } = useContext(ModalContext);
     const { request, uplaodFile } = useHttp();
     const { mic, start, recording, stop, track } = useMicrophone();
