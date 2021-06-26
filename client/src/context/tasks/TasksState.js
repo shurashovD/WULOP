@@ -201,7 +201,7 @@ export const TasksState = ({children}) => {
             {
                 id: 36,
                 test: dg('paintingInterstitialSpace'),
-                dect: 'Оценивается равномерное плотное окрашивание всей межресничной зоны.',
+                dect: dg('paintingInterstitialSpaceD'),
             },
             {
                 id: 37,
