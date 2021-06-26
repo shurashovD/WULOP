@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { ModalContext } from '../context/modal/modalContext';
 import errorImg from '../img/error-img.png';
 
 export const Modal = () => {
     const {modal, hide} = useContext(ModalContext);
     const {text, type} = modal;
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
 
     if ( !modal.visible ) return null;
 
@@ -17,10 +20,10 @@ export const Modal = () => {
             <div className="row">
             <div className="col-5 mx-auto p-5 rounded bg-secondary btn-shadow">
                 { type === 'register' && <p className="text-white text-uppercase text-center mb-1">
-                    Регистрация участника прошла успешно!
+                    {dg('registrationWasSuccessful')}
                 </p> }
                 { type === 'register' && <p className="text-white text-uppercase text-center">
-                    Номер участника
+                    {dg('participantNumber')}
                 </p> }
                 <p className={"text-white text-uppercase text-center " + ( (type === 'register') && "fs-1")}>
                     {text}

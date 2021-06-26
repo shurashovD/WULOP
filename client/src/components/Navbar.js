@@ -3,10 +3,13 @@ import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { AuthContext } from '../context/AuthContext';
 import headerLogoutImg from '../img/header-logout-img.png';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 
 export const NavBar = ({links}) => {
     const history = useHistory();
     const auth = useContext(AuthContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
 
     if ( !links ) links = [];
     
@@ -32,7 +35,7 @@ export const NavBar = ({links}) => {
             <div className="col-2">
                 <a href="/" onClick={logoutHandler}>
                     <img src={headerLogoutImg} alt="exit" className="me-2"/>
-                    <span className="text-dark">Выход</span>
+                    <span className="text-dark">{dg('goOut')}</span>
                 </a>
             </div>
         </div>

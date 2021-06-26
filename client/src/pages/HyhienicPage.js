@@ -2,11 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import { NavBar } from '../components/Navbar';
 import { HyhienicalContext } from '../context/hyhienical/hyhienicalContext';
 import { Loader } from '../components/Loader';
-import { TasksContext } from '../context/TasksContext';
+import { TasksContext } from '../context/tasks/TasksContext';
 import microphoneImg from '../img/microphone.svg';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 
 export const HyhienicPage = () => {
-    const tasks = useContext(TasksContext);
+    const { tasks } = useContext(TasksContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const { hyhienicState, initAudio, setNumber, setRecord, setHyhienicalScore, readyHandler } = useContext(HyhienicalContext);
     const { number, model, modelLoading, record, updateRecord, audio, loading } = hyhienicState;
 
@@ -34,8 +37,8 @@ export const HyhienicPage = () => {
         <div className="container min-vh-100 d-flex flex-column justify-content-start">
             { loading && <Loader /> }
             <NavBar />
-            <p className="text-dark fw-bold text-center mt-4">Судья гигиенист</p>
-            <p className="text-dark text-center mt-3">Введите номер участника</p>
+            <p className="text-dark fw-bold text-center mt-4">{dg('hygienist')}</p>
+            <p className="text-dark text-center mt-3">{dg('enterTheParticipantNumber')}</p>
             <div className="row">
                 <div className="col-2 mx-auto">
                     <input
@@ -47,9 +50,9 @@ export const HyhienicPage = () => {
                     />
                 </div>
             </div>
-            { !model && <p className="text-dark text-center mt-3">Участник не определен</p> }
-            { model && <p className="text-dark text-center fs-3 mt-3">Участник: №{model.number}. Категория: “{tasks[model.task-1].name}”</p> }
-            { model && <p className="text-dark text-center mt-4">Введите баллы</p> }
+            { !model && <p className="text-dark text-center mt-3">- - -</p> }
+            { model && <p className="text-dark text-center fs-3 mt-3">{dg('participant')}: №{model.number}. {dg('category')}: “{tasks[model.task-1].name}”</p> }
+            { model && <p className="text-dark text-center mt-4">{dg('enterYourPoints')}</p> }
             { model && (<div className="row ">
                 <div className="col-2 mx-auto">
                     <input
@@ -86,7 +89,7 @@ export const HyhienicPage = () => {
                         className="btn btn-primary btn-shadow text-white text-uppercase container"
                         onClick={readyHandler}
                     >
-                        Готово
+                        {dg('done')}
                     </button>
                 </div>
             </div>

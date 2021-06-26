@@ -1,6 +1,7 @@
 import { useCallback, useContext, useReducer } from "react";
 import { useHttp } from "../../hooks/http.hook";
 import { AuthContext } from "../AuthContext";
+import { DictionaryContext } from "../dictionary/dictionaryContext";
 import { ModalContext } from "../modal/modalContext";
 import { HyhienicalContext } from "./hyhienicalContext";
 import { hyhienicalReducer } from "./hyhienicalReducer";
@@ -8,6 +9,8 @@ import { HYHIENIC_REC, HYHIENIC_SET_LOADING, HYHIENIC_SET_MODEL, HYHIENIC_SET_MO
 
 export const HyhienicalState = ({children}) => {
     const auth = useContext(AuthContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const { request, uplaodFile } = useHttp();
     const { show } = useContext(ModalContext);
     const [state, dispatch] = useReducer(hyhienicalReducer, {
@@ -86,7 +89,7 @@ export const HyhienicalState = ({children}) => {
             }, { Authorization: `Bearer ${auth.token}` });
             dispatch({ type: HYHIENIC_SET_LOADING });
             if ( msgFromSrv.success ) {
-                show('БАЛЛЫ ЗАСЧИТАНЫ');
+                show(dg('pointsAreCounted'));
                 setModel(null);
                 dispatch({ type: HYHIENIC_SET_NUMBER, number: '' });
                 return;
@@ -94,6 +97,7 @@ export const HyhienicalState = ({children}) => {
             show('Ошибка сохранения оценки', 'error');
         }
         catch (e) {
+            show(e.message, 'error');
             console.log(e);
             dispatch({ type: HYHIENIC_SET_LOADING });
         }

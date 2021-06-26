@@ -3,7 +3,7 @@ import { Loader } from '../components/Loader';
 import { NavBar } from '../components/Navbar';
 import { AuthContext } from '../context/AuthContext';
 import { ModalContext } from '../context/modal/modalContext';
-import { TasksContext } from '../context/TasksContext';
+import { TasksContext } from '../context/tasks/TasksContext';
 import { useHttp } from '../hooks/http.hook';
 import userAddLinkImg from '../img/add-user.svg';
 

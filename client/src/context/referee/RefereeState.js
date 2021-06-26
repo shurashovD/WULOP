@@ -5,7 +5,7 @@ import { useHttp } from "../../hooks/http.hook";
 import { REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
 import { AuthContext } from "../AuthContext";
 import { ModalContext } from "../../context/modal/modalContext";
-import { TasksContext } from "../TasksContext";
+import { TasksContext } from "../tasks/TasksContext";
 import { useMicrophone } from "../../hooks/microphone.hook";
 
 export const RefereeState = ({children}) => {

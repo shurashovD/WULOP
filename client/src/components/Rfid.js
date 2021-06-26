@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import rfidImg from '../img/rfid-img.png';
 
 export const Rfid = ({ callBack, rfidCancelHandler, title }) => {    
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const rfidInputChange = event => {
         if ( isNaN(event.key) ) event.preventDefault();
         if ( event.key !== 'Enter' ) return;
@@ -25,10 +28,10 @@ export const Rfid = ({ callBack, rfidCancelHandler, title }) => {
                 className="btn btn-primary text-white text-uppercase btn-shadow mx-auto"
                 onClick={rfidCancelHandler}
             >
-                Отмена
+                Cancel
             </button> }
             <img src={rfidImg} alt="rfid" width="200" />
-            <p className="text-dark">Приложите метку участника</p>
+            <p className="text-dark">{dg('attachTheParticipantLabel')}</p>
             <input
                 type="text"
                 name="rfid"

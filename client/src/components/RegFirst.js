@@ -1,9 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { TasksContext } from '../context/TasksContext';
+import React, { useContext, useEffect, useState } from 'react';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
+import { TasksContext } from '../context/tasks/TasksContext';
 import addUserImg from '../img/add-user.svg';
 
 export const RegFirst = ({ form, setForm, btnClkHandler }) => {
-    const tasks = useContext(TasksContext);
+    const {tasks} = useContext(TasksContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const [btnClasses, setBtnClasses] = useState(tasks.map(() => "btn-primary"));
 
     const style = {
@@ -28,7 +31,7 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
 
     return (
         <div>
-            <p className="text-dark fw-bold text-center mt-4 mb-4">Регистрация участника</p>
+            <p className="text-dark fw-bold text-center mt-4 mb-4">{dg('registration')}</p>
             <div className="col-6 mx-auto">
                 <input
                     className="form-control shadow"
@@ -36,11 +39,11 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
                     value={form.team}
                     onChange={e => setForm({...form, team: e.target.value})}
                     onKeyDown={keyDownHandler}
-                    placeholder="Введите имя участника"
+                    placeholder={dg('enterTheNameOfTheParticipant')}
                     style={ style.addUserInput }
                 />
             </div>
-            <p className="text-dark fw-bold text-center mt-5 mb-4">Выберите конкурсное задание участника</p>
+            <p className="text-dark fw-bold text-center mt-5 mb-4">{dg('selectContestantTask')}</p>
             <div className="col-8 mx-auto">
                 <div className="row gy-4 gx-5">
                     { tasks.map((item, index) => {
@@ -60,15 +63,15 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
                 </div>
             </div>
             <p className="text-dark text-center mx-auto mt-5">
-                    { (form.team.length > 0) && (<>Участник: {form.team}. </>) }
-                    { form.task && (<>Категория: “{form.taskDescription}”.</>) }
+                    { (form.team.length > 0) && (<>{dg('participant')}: {form.team}. </>) }
+                    { form.task && (<>{dg('category')}: “{form.taskDescription}”.</>) }
                 </p>
             <div className="row mt-5">
                 <button
                     className="btn btn-primary text-white col-3 mx-auto btn-shadow"
                     onClick={btnClkHandler}
                 >
-                    Зарегистрировать
+                    {dg('register')}
                 </button>
             </div>
         </div>

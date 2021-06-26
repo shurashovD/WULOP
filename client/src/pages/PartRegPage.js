@@ -7,9 +7,12 @@ import { Loader } from '../components/Loader';
 import { AuthContext } from '../context/AuthContext';
 import { useHttp } from '../hooks/http.hook';
 import { ModalContext } from '../context/modal/modalContext';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 
 export const PartRegPage = () => {
     const auth = useContext(AuthContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const {show} = useContext(ModalContext);
     const {request, loading} = useHttp();
 
@@ -20,7 +23,7 @@ export const PartRegPage = () => {
     });
 
     const navLinks = [
-        {to: 'registration/list', imgSrc: usersListLinkImg, imgAlt: 'add-user', title: 'Список участников'}
+        {to: 'registration/list', imgSrc: usersListLinkImg, imgAlt: 'add-user', title: dg('listOfParticipants')}
     ];
 
     const signIn = useCallback( async () => {
@@ -50,7 +53,7 @@ export const PartRegPage = () => {
     useEffect(() => {
         if ( (form.team.length === 0) || (!form.task) || (form.rfid?.length !== 10) ) return;
         signIn();
-    }, [form, signIn]);
+    }, [form]);
 
     return(
         <div className="container">

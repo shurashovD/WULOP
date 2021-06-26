@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { RefereeContext } from '../context/referee/RefereeContext';
-import { TasksContext } from '../context/TasksContext';
+import { TasksContext } from '../context/tasks/TasksContext';
 import microphoneImg from '../img/microphone.svg';
 
 export const RefereeMain = () => {
-    const tasks = useContext(TasksContext);
+    const { tasks } = useContext(TasksContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const { refereeState, scoreChangeHandler, recBtnHandler, readyBtnHandler, cancelBtnHandler, photoBtnHandler } = useContext(RefereeContext);
     const { audio, model, scores, record, micBusy, sources, amount, invalid } = refereeState;
 
@@ -17,7 +20,7 @@ export const RefereeMain = () => {
         <div className="container mt-3">
             <div className="container d-flex justify-content-center align-items-center mb-3">
                 <span className="text-primary fs-3 me-4">
-                    Участник №{model.number}. Категория: "{tasks[model.task-1].name}"
+                    {dg('participant')} №{model.number}. {dg('category')}: "{tasks[model.task-1].name}"
                 </span>
                 <button
                     className="btn btn-primary btn-shadow text-white text-uppercase col-2"
@@ -29,14 +32,14 @@ export const RefereeMain = () => {
             </div>
             <div className="row">
                 <div className="col-7 bg-secondary rounded shadow d-flex">
-                    <p className="w-25 border-end border-primary text-white text-center m-0 p-2">Критерии</p>
-                    <p className="w-75 text-white text-center m-0 p-2">Описание критериев оценки</p>
+                    <p className="w-25 border-end border-primary text-white text-center m-0 p-2">{dg('criteria')}</p>
+                    <p className="w-75 text-white text-center m-0 p-2">{dg('descriptionOfTheEvaluationCriteria')}</p>
                 </div>
                 <div className="col-2">
-                    <p className="bg-secondary rounded shadow text-white text-center p-2 m-0">Баллы от 1 до 100</p>
+                    <p className="bg-secondary rounded shadow text-white text-center p-2 m-0">{dg('pointsFromTo')}</p>
                 </div>
                 <div className="col-3">
-                    <p className="bg-secondary rounded shadow text-white text-center p-2 m-0">Комментарий</p>
+                    <p className="bg-secondary rounded shadow text-white text-center p-2 m-0">{dg('comment')}</p>
                 </div>
             </div>
             {
@@ -81,7 +84,7 @@ export const RefereeMain = () => {
                 })
             }
             <div className="row mb-3">
-                <p className="col-7 text-end text-dark text-uppercase fs-3">Сумма баллов:</p>
+                <p className="col-7 text-end text-dark text-uppercase fs-3">{dg('totalPoints')}:</p>
                 <p className="col-2 text-center text-dark fs-3 fw-bold">{amount}</p>
             </div>
             <div className="row mb-5">
@@ -89,13 +92,13 @@ export const RefereeMain = () => {
                     className="btn btn-primary btn-shadow text-white text-uppercase mx-auto col-2"
                     onClick={readyBtnHandler}
                 >
-                    Готово
+                    {dg('done')}
                 </button>
                 <button
                     className="btn btn-primary btn-shadow text-white text-uppercase mx-auto col-2"
                     onClick={cancelBtnHandler}
                 >
-                    Отмена
+                    Cancel
                 </button>
             </div>
         </div>

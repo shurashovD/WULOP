@@ -1,13 +1,16 @@
 import React, {useContext} from 'react';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { PhotoContext } from '../context/photo/photoContext';
-import { TasksContext } from '../context/TasksContext';
+import { TasksContext } from '../context/tasks/TasksContext';
 import noneImg from '../img/none.svg';
 
 export const PhotoInputs = () => {
+    const dictionary = useContext(DictionaryContext);
+    const {dg} = dictionary;
     const { photo, fileInputCallBack, reset } = useContext(PhotoContext);
     const { number, task, beforePhoto, afterPhoto } = photo.model;
     const { beforeImgLoading, afterImgLoading } = photo;
-    const tasks = useContext(TasksContext);
+    const { tasks } = useContext(TasksContext);
 
     const fileInputHandler = event => {
         if ( !event.target.files[0] ) return;
@@ -24,19 +27,19 @@ export const PhotoInputs = () => {
 
     return (
         <div className="container-fluid min-vh-75 d-flex flex-column">
-            <p className="text-primary text-center fw-bold mt-3">Фотограф</p>
+            <p className="text-primary text-center fw-bold mt-3">{dg('photographer')}</p>
             <p className="text-primary text-center fw-bold fs-3">
-                 Участник: №{number}. Категория: “{tasks[task-1].name}”
+                 {dg('participant')}: №{number}. {dg('category')}: “{tasks[task-1].name}”
             </p>
             <div className="row">
                 <div className="col-1"></div>
                 <label className="btn btn-primary btn-shadow text-white text-uppercase col-4">
-                    Загрузить фото "до"
+                    {dg('uploadPhotoBefore')}
                     <input type="file" name="beforePhoto" className="d-none" accept="image/jpeg" onInput={fileInputHandler} />
                 </label>
                 <div className="col-2"></div>
                 <label className="btn btn-primary btn-shadow text-white text-uppercase col-4">
-                    Загрузить фото "после"
+                    {dg('uploadPhotoAfter')}
                     <input type="file" name="afterPhoto" className="d-none" accept="image/jpeg" onInput={fileInputHandler} />
                 </label>
             </div>
@@ -69,11 +72,11 @@ export const PhotoInputs = () => {
             <div className="row mb-4">
                 <div className="col-1"></div>
                 <button name="beforePhoto" className="btn btn-primary btn-shadow text-white text-uppercase col-4" onClick={delPhotoHandler}>
-                    Удалить фото "до"
+                    {dg('delete')}
                 </button>
                 <div className="col-2"></div>
                 <button name="afterPhoto" className="btn btn-primary btn-shadow text-white text-uppercase col-4" onClick={delPhotoHandler}>
-                    Удалить фото "после"
+                    {dg('delete')}
                 </button>
             </div>
             <div className="row">
@@ -81,7 +84,7 @@ export const PhotoInputs = () => {
                     className="btn btn-primary btn-shadow col-4 mx-auto text-white text-uppercase"
                     onClick={reset}
                 >
-                    Готово
+                    {dg('done')}
                 </button>
             </div>
         </div>

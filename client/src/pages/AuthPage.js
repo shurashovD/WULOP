@@ -5,9 +5,12 @@ import logoPlaceholder from '../img/login-bgi.svg';
 import passPlaceholder from '../img/pass-bgi.svg';
 import btnBgi from '../img/login-btn-bgi.svg';
 import footerImg from '../img/footer-img.png';
+import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 
 export const AuthPage = () => {
     const auth = useContext(AuthContext);
+    const dictionary = useContext(DictionaryContext);
+    const {dg, lang, setLang} = dictionary;
     const [loginInvalid, setLoginInvalid] = useState(false);
     const [passInvalid, setPassInvalid] = useState(false);
     const {loading, request, error, clearError} = useHttp();
@@ -64,11 +67,11 @@ export const AuthPage = () => {
             <div className="container my-auto">
                 <div className="row">
                     <form className="m-auto mb-4 border border-primary border-2 rounded px-4 py-5 shadow col-4 needs-validation">
-                        <p className="text-center text-dark fw-bold">Введите свои данные</p>
+                        <p className="text-center text-dark fw-bold">{dg('enterYourDetails')}</p>
                         <div className="input-group mb-3">
                             <input type="text"
                                 className={"form-control shadow" + (loginInvalid && " is-invalid")}
-                                placeholder="Логин"
+                                placeholder={dg('login')}
                                 aria-label="Username"
                                 aria-describedby="basic-addon1"
                                 style={ style.login }
@@ -80,7 +83,7 @@ export const AuthPage = () => {
                         <div className="input-group has-validation mb-4">
                             <input type="text"
                                 className={"form-control shadow" + (passInvalid && " is-invalid")}
-                                placeholder="Пароль"
+                                placeholder={dg('pass')}
                                 aria-label="Password"
                                 aria-describedby="basic-addon1"
                                 style={ style.password }
@@ -96,7 +99,7 @@ export const AuthPage = () => {
                                 disabled={loading}
                                 style={ style.submit }
                             >
-                                вход
+                                {dg('entrance')}
                             </button>
                         </div>
                     </form>
@@ -104,12 +107,33 @@ export const AuthPage = () => {
                 <div className="row">
                     <div className="col-3 mx-auto">
                         <p className="text-primary text-center fw-bold">
-                            Выберите язык
+                            {dg('selectLanguage')}
                         </p>
                         <div className="d-flex justify-content-center">
-                            <p className="text-dark fw-bold border border-primary border-2 rounded p-2">EN</p>
-                            <p className="text-dark fw-bold border border-primary border-2 rounded p-2 mx-2 bg-secondary">RU</p>
-                            <p className="text-dark fw-bold border border-primary border-2 rounded p-2">DE</p>
+                            <p
+                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 me-2 " + (( lang === 'en' ) && "bg-secondary") }
+                                onClick={() => setLang('en')}
+                            >
+                                EN
+                            </p>
+                            <p
+                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 me-2 " + (( lang === 'ru' ) && "bg-secondary") }
+                                onClick={() => setLang('ru')}
+                            >
+                                RU
+                            </p>
+                            <p
+                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 me-2 " + (( lang === 'de' ) && "bg-secondary") }
+                                onClick={() => setLang('de')}
+                            >
+                                DE
+                            </p>
+                            <p
+                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 " + (( lang === 'fr' ) && "bg-secondary") }
+                                onClick={() => setLang('fr')}
+                            >
+                                FR
+                            </p>
                         </div>
                     </div>
                 </div>
