@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { TasksContext } from '../context/tasks/TasksContext';
 import addUserImg from '../img/add-user.svg';

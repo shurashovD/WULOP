@@ -101,7 +101,7 @@ export const HyhienicalState = ({children}) => {
             console.log(e);
             dispatch({ type: HYHIENIC_SET_LOADING });
         }
-    }, [state.model, request, auth.token, show, setModel]);
+    }, [state.model, request, auth.token, show, setModel, dg]);
 
     return (
         <HyhienicalContext.Provider value={{
