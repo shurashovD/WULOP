@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { useHttp } from '../../hooks/http.hook';
 import { AuthContext } from '../AuthContext';
 import { ScoreboardContext } from './scoreboardContext';
@@ -15,25 +15,7 @@ export const ScoreboardState = ({children}) => {
         result: []
     });
 
-    const getScores = useCallback( async () => {
-        try {
-            if (isNaN(parseInt(state.task))) return;
-            const msgFromSrv = await request('/api/model/get-score', 'POST', { task: (state.task+1) }, { Authorization: `Bearer ${auth.token}` });
-            const result = msgFromSrv.result.sort((a, b) => {
-                let aSum = a.scoresResult.reduce((sum, current) => sum + current.amount, 0);
-                if ( state.mode === 'RES' ) aSum += a.hyhienicalScore ?? 0;
-                let bSum = b.scoresResult.reduce((sum, current) => sum + current.amount, 0);
-                if ( state.mode === 'RES' ) bSum += b.hyhienicalScore ?? 0;
-                return bSum - aSum;
-            });
-            dispatch({ type: SCOREBOARD_SET_RESULT, result });
-        }
-        catch (e) {
-            console.log(e);
-        }
-    }, [request, auth.token, state.task, state.mode]);
-
-    const eventListenerCallback = useCallback( event => {
+    const eventListenerCallback = event => {
         if ( event.key === 'X' ) {
             dispatch({ type: SCOREBOARD_SET_TASK, task: null, mode: 'OFF' });
             auth.logout();
@@ -62,25 +44,40 @@ export const ScoreboardState = ({children}) => {
             dispatch({ type: SCOREBOARD_SET_RESULT, result: [] });
             dispatch({ type: SCOREBOARD_SET_TASK, task: null, mode: 'OFF' });
         }
-    }, [dispatch, auth]);
+    }
 
     useEffect(() => {
-        if ( state.mode === 'OFF' ) {
-            clearInterval(state.intervalId);
-            dispatch({ type: SCOREBOARD_SET_INTERVAL, interval: null });
-        }
-        if ( state.mode === 'RES' ) {
-            clearInterval(state.intervalId);
-            getScores();
-            dispatch({ type: SCOREBOARD_SET_INTERVAL, interval: null });
+        async function getScores() {
+            try {
+                if (isNaN(parseInt(state.task))) return;
+                const msgFromSrv = await request('/api/model/get-score', 'POST', { task: (state.task+1) }, { Authorization: `Bearer ${auth.token}` });
+                const result = msgFromSrv.result.sort((a, b) => {
+                    let aSum = a.scoresResult.reduce((sum, current) => sum + current.amount, 0);
+                    if ( state.mode === 'RES' ) aSum += a.hyhienicalScore ?? 0;
+                    let bSum = b.scoresResult.reduce((sum, current) => sum + current.amount, 0);
+                    if ( state.mode === 'RES' ) bSum += b.hyhienicalScore ?? 0;
+                    return bSum - aSum;
+                });
+                console.log(result);
+                dispatch({ type: SCOREBOARD_SET_RESULT, result });
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
         if ( state.mode === 'PRE' ) {
-            clearInterval(state.intervalId);
-            getScores();
-            const interval = setInterval(getScores, 30000);
+            const interval = setInterval(getScores, 5000);
             dispatch({ type: SCOREBOARD_SET_INTERVAL, interval });
+            getScores();
         }
-    }, [state.mode, state.task]);
+        if ( state.mode === 'RES' ) {
+            getScores();
+            dispatch({ type: SCOREBOARD_SET_INTERVAL, interval: null });
+        }
+        if ( state.mode === 'OFF' ) {
+            dispatch({ type: SCOREBOARD_SET_INTERVAL, interval: null });
+        }
+    }, [state.mode, state.task, request, auth.token]);
 
     return (
         <ScoreboardContext.Provider value={{

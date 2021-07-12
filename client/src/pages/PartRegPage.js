@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import usersListLinkImg from '../img/users-list-link-img.png';
 import { NavBar } from '../components/Navbar';
 import { RegFirst } from '../components/RegFirst';
@@ -26,21 +26,6 @@ export const PartRegPage = () => {
         {to: 'registration/list', imgSrc: usersListLinkImg, imgAlt: 'add-user', title: dg('listOfParticipants')}
     ];
 
-    const signIn = useCallback( async () => {
-        try {
-            const msgFromSrv = await request('/api/model/register', 'POST', form, { Authorization: `Bearer ${auth.token}` });
-            if ( msgFromSrv.success ) {
-                setForm({
-                    team: '', task: null, taskDescription: '', rfid: null
-                });
-                show(msgFromSrv.number, 'register');
-            }
-        }
-        catch (e) {
-            show(e.message, 'error');
-        }
-    }, [request, auth.token, form, show]);
-
     const btnClkHandler = () => setStep('Rfid');
 
     const rfidCancelHandler = () => setStep('RegFirst');
@@ -52,8 +37,22 @@ export const PartRegPage = () => {
 
     useEffect(() => {
         if ( (form.team.length === 0) || (!form.task) || (form.rfid?.length !== 10) ) return;
+        async function signIn() {
+            try {
+                const msgFromSrv = await request('/api/model/register', 'POST', form, { Authorization: `Bearer ${auth.token}` });
+                if ( msgFromSrv.success ) {
+                    setForm({
+                        team: '', task: null, taskDescription: '', rfid: null
+                    });
+                    show(msgFromSrv.number, 'register');
+                }
+            }
+            catch (e) {
+                show(e.message, 'error');
+            }
+        }
         signIn();
-    }, [form]);
+    }, [request, auth.token, form, show]);
 
     return(
         <div className="container">

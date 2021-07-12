@@ -13,14 +13,14 @@ import { useRoutes } from './routes';
 import { DictionaryState } from './context/dictionary/DictionaryState';
 
 const App = () => {
-  const { login, logout, token, device, description, deviceId } = useAuth();
+  const { login, logout, token, device, description, deviceId, lang } = useAuth();
   const isAuthenticated = !!token;
   const routes = useRoutes(device);
 
   return (
     
     <AuthContext.Provider value={{
-      token, login, logout, device, isAuthenticated, description, id: deviceId
+      token, login, logout, device, isAuthenticated, description, id: deviceId, lang
     }}>
       <DictionaryState>
         <TasksState>

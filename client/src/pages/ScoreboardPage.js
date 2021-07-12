@@ -1,19 +1,34 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { ScoreboardContext } from '../context/scoreboard/scoreboardContext';
 import { TasksContext } from '../context/tasks/TasksContext';
 
 export const ScoreboardPage = () => {
     const dictionary = useContext(DictionaryContext);
-    const {dg} = dictionary;
+    const { dg } = dictionary;
     const { tasks } = useContext(TasksContext);
     const { scoreboardState, eventListenerCallback } = useContext(ScoreboardContext);
     const {mode, task, result} = scoreboardState;
+    const [keyDownEvent, setKeyDownEvent] = useState(null);
 
     useEffect(() => {
+        function keyDownEventHandler(event) {
+            setKeyDownEvent(event);
+        }
+        document.addEventListener('keydown', keyDownEventHandler);
         document.querySelector('body').style.cursor = 'none';
-        document.addEventListener('keydown', eventListenerCallback);
+        return () => {
+            document.querySelector('body').style.cursor = 'default';
+            document.removeEventListener('keydown', keyDownEventHandler);
+        }
     }, []);
+
+    useEffect(() => {
+        if ( keyDownEvent ) {
+            setKeyDownEvent(null);
+            eventListenerCallback(keyDownEvent);
+        }
+    }, [keyDownEvent, eventListenerCallback]);
 
     return(
         <div className="container-fluid min-vh-100 p-3">

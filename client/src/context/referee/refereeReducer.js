@@ -1,4 +1,4 @@
-import { REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
+import { REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_ONE_SRC, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
 
 const handlers = {
     [REFEREE_SET_MEDIA]: (state, action) => ({...state, audio: action.audio}),
@@ -9,6 +9,7 @@ const handlers = {
     [REFEREE_SET_REC]: (state, action) => ({...state, record: action.record}),
     [REFEREE_SET_UPDREC]: (state, action) => ({...state, updateRecord: action.updateRecord, updateKey: action.recordKey}),
     [REFEREE_SET_SRC]: (state, action) => ({...state, sources: action.sources}),
+    [REFEREE_SET_ONE_SRC]: (state, action) => ({...state, sources: state.sources.set(state.micBusy, action.src)}),
     [REFEREE_SET_INVALID]: (state, action) => ({...state, invalid: action.value}),
     [REFEREE_SET_PHOTO]: (state, action) => ({...state, photo: action.value}),
     DEFAULT: state => state

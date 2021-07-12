@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useReducer } from "react";
 import { RefereeContext } from "./RefereeContext";
 import { refereeReducer } from "./refereeReducer";
 import { useHttp } from "../../hooks/http.hook";
-import { REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
+import { REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_ONE_SRC, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
 import { AuthContext } from "../AuthContext";
 import { ModalContext } from "../../context/modal/modalContext";
 import { TasksContext } from "../tasks/TasksContext";
@@ -87,26 +87,6 @@ export const RefereeState = ({children}) => {
 
     const rfidCallback = rfid => getModel(rfid);
 
-    const sendComment = useCallback( async () => {
-        if ( !track ) return;
-        const file = new File([track], `${auth.description}_${performance.now()}.webm`);
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-            const msgFromSrv = await uplaodFile('/api/model/referee-comment', formData, { Authorization: `Bearer ${auth.token}` });
-            const newSources = new Map( state.sources );
-            newSources.set(state.micBusy, msgFromSrv.path);
-            dispatch({ type: REFEREE_SET_SRC, sources: newSources });
-            dispatch({ type: REFEREE_SET_MIC_BUSY, value: null });
-        }
-        catch (e) {
-            dispatch({ type: REFEREE_SET_MIC_BUSY, value: null });
-            console.log(e);
-            show(e.message, 'error');
-        }
-        return true;
-    }, [track, auth.description, auth.token, uplaodFile, state.sources, state.micBusy, show]);
-
     const recBtnHandler = event => {
         const targetName = parseInt(
             event.nativeEvent
@@ -185,7 +165,26 @@ export const RefereeState = ({children}) => {
         dispatch({ type: REFEREE_SET_REC, record: recording });
     }, [recording]);
 
-    useEffect( useCallback(sendComment, [sendComment]), [track] );
+    useEffect(() => {
+        if ( !track ) return;
+        async function sendComment() {
+            const file = new File([track], `${auth.description}_${performance.now()}.webm`);
+            const formData = new FormData();
+            formData.append('file', file);
+            try {
+                const msgFromSrv = await uplaodFile('/api/model/referee-comment', formData, { Authorization: `Bearer ${auth.token}` });
+                dispatch({ type: REFEREE_SET_ONE_SRC, src: msgFromSrv.path });
+                dispatch({ type: REFEREE_SET_MIC_BUSY, value: null });
+            }
+            catch (e) {
+                dispatch({ type: REFEREE_SET_MIC_BUSY, value: null });
+                console.log(e);
+                show(e.message, 'error');
+            }
+            return true;
+        }
+        sendComment();
+    }, [track, auth.description, auth.token, show, uplaodFile]);
 
     return (
         <RefereeContext.Provider value={{
