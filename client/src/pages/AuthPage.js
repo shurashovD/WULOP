@@ -129,10 +129,16 @@ export const AuthPage = () => {
                                 DE
                             </p>
                             <p
-                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 " + (( lang === 'fr' ) && "bg-secondary") }
+                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 me-2 " + (( lang === 'fr' ) && "bg-secondary") }
                                 onClick={() => setLang('fr')}
                             >
                                 FR
+                            </p>
+                            <p
+                                className={"text-dark fw-bold border border-primary border-2 rounded p-2 " + (( lang === 'tr' ) && "bg-secondary") }
+                                onClick={() => setLang('tr')}
+                            >
+                                TR
                             </p>
                         </div>
                     </div>

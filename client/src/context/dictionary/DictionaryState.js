@@ -5,11 +5,12 @@ import { DictionaryContext } from "./dictionaryContext";
 import { English } from "./English";
 import { Franch } from "./Franch";
 import { Russian } from "./Russian";
+import { Turkey } from "./Turkey";
 
 export const DictionaryState = ({children}) => {
     const auth = useAuth();
     const Dictionary = {
-        en: English, ru: Russian, de: Deutch, fr: Franch
+        en: English, ru: Russian, de: Deutch, fr: Franch, tr: Turkey
     }
     let initLang = 'en';
     if ( Boolean(Dictionary[navigator.language]) ) initLang = navigator.language;
