@@ -17,6 +17,7 @@ export const PartRegPage = () => {
     const {request, loading} = useHttp();
 
     const [step, setStep] = useState('RegFirst');
+    const [error, setError] = useState(null);
 
     const [form, setForm] = useState({
         team: '', task: null, taskDescription: '', rfid: null
@@ -42,17 +43,25 @@ export const PartRegPage = () => {
                 const msgFromSrv = await request('/api/model/register', 'POST', form, { Authorization: `Bearer ${auth.token}` });
                 if ( msgFromSrv.success ) {
                     setForm({
-                        team: '', task: null, taskDescription: '', rfid: null
+                        team: '', mail: '', task: null, taskDescription: '', rfid: null
                     });
                     show(msgFromSrv.number, 'register');
                 }
             }
             catch (e) {
-                show(e.message, 'error');
+                setForm({...form, rfid: null});
+                setError(e.message);
             }
         }
         signIn();
-    }, [request, auth.token, form, show]);
+    }, [request, auth.token, form]);
+
+    useEffect(() => {
+        if ( error ) {
+            show(error, 'error');
+            setError(null);
+        }
+    }, [error]);
 
     return(
         <div className="container">

@@ -15,6 +15,7 @@ const ScoreSchema = new Schema({
 const schemaModel = new Schema({
     rfid: { type: String, required: true },
     team: { type: String, required: true },
+    mail: { type: String },
     task: { type: String, required: true },
     number: { type: Number, required: true },
     beforePhoto: { type: String },

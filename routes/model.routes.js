@@ -3,8 +3,21 @@ const AuthMiddleWare = require('../middleware/auth.middleware');
 const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
-const fs = require('fs');
+//const nodemailer = require('nodemailer');
 const path = require('path');
+const config = require('config');
+
+/*async function mail() {
+    const transporter = nodemailer.createTransport(config.smtp);
+    const info = await transporter.sendMail({
+        from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
+        to: "shurashovd@yandex.ru", // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+    });
+    console.log(info);
+}*/
 
 const router = Router();
 
@@ -14,19 +27,21 @@ router.post(
     [
         check('team', 'Пустое имя участника').exists(),
         check('task', 'Не указано задание').exists(),
-        check('rfid', 'Неверное значение RFID').isLength({ min: 10, max: 10 })
+        check('rfid', 'Неверное значение RFID').isLength({ min: 10, max: 10 }),
     ],
     async (req, res) => {
         try {
             const validationResultErrors = validationResult(req);
-            if ( !validationResultErrors.isEmpty() ) return res.status(400).json({ message: validationResultErrors.array()[0] });
+            if ( !validationResultErrors.isEmpty() ) {
+                return res.status(400).json({ message: validationResultErrors.errors[0].msg });
+            }
 
-            const {team, task, rfid} = req.body;
+            const {team, task, rfid, mail} = req.body;
             const candidate = await Model.findOne({ team, task, completed: false });
-            if ( candidate ) return res.status(400).json({ message: 'Участник уже зарегистрирован в текущем задании' });
+            if ( candidate ) return res.status(400).json({ message: 'Participant already has registered by current task' });
 
             const rfidCandidate = await Model.findOne({ rfid, completed: false });
-            if ( rfidCandidate ) return res.status(400).json({ message: 'Метка занята' });
+            if ( rfidCandidate ) return res.status(400).json({ message: 'RFID is busy...' });
 
             let number = 1;
 
@@ -35,7 +50,7 @@ router.post(
                 number = allModels.sort((a, b) => b.number - a.number)[0].number + 1;
             }           
 
-            const model = new Model({ team, task, rfid, number });
+            const model = new Model({ team, mail, task, rfid, number });
             await model.save();
 
             res.json({ number, success: true });
@@ -168,7 +183,20 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            if ( model.scores.length == 7 ) model.completed = true;
+            if ( model.scores.length == 7 ) {
+                model.completed = true;
+                if ( model.mail ) {
+                    const transporter = nodemailer.createTransport(config.smtp);
+                    const info = await transporter.sendMail({
+                        from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
+                        to: "shurashovd@yandex.ru", // list of receivers
+                        subject: "Hello ✔", // Subject line
+                        text: "Hello world?", // plain text body
+                        html: "<b>Hello world?</b>", // html body
+                    });
+                    console.log(info);
+                }
+            }
 
             await model.save();
 

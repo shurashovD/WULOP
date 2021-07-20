@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { TasksContext } from '../context/tasks/TasksContext';
 import addUserImg from '../img/add-user.svg';
+import addMailImg from '../img/addMailImg.svg';
 
 export const RegFirst = ({ form, setForm, btnClkHandler }) => {
     const {tasks} = useContext(TasksContext);
@@ -15,6 +16,13 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
             backgroundImage: `url(${addUserImg})`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: '10px center'
+        },
+        addMailInput: {
+            paddingLeft: '40px',
+            backgroundImage: `url(${addMailImg})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: '10px center',
+            backgroundSize: '24px'
         }
     }
 
@@ -34,13 +42,23 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
             <p className="text-dark fw-bold text-center mt-4 mb-4">{dg('registration')}</p>
             <div className="col-6 mx-auto">
                 <input
-                    className="form-control shadow"
+                    className="form-control shadow mb-2"
                     name="team"
                     value={form.team}
                     onChange={e => setForm({...form, team: e.target.value})}
                     onKeyDown={keyDownHandler}
                     placeholder={dg('enterTheNameOfTheParticipant')}
                     style={ style.addUserInput }
+                />
+            </div>
+            <div className="col-6 mx-auto">
+                <input
+                    className="form-control shadow"
+                    name="mail"
+                    value={form.mail}
+                    onChange={e => setForm({...form, mail: e.target.value})}
+                    placeholder='E-mail'
+                    style={ style.addMailInput }
                 />
             </div>
             <p className="text-dark fw-bold text-center mt-5 mb-4">{dg('selectContestantTask')}</p>
@@ -66,7 +84,7 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
                     { (form.team.length > 0) && (<>{dg('participant')}: {form.team}. </>) }
                     { form.task && (<>{dg('category')}: “{form.taskDescription}”.</>) }
                 </p>
-            <div className="row mt-5">
+            <div className="row mt-4">
                 <button
                     className="btn btn-primary text-white col-3 mx-auto btn-shadow"
                     onClick={btnClkHandler}
