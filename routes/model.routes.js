@@ -287,4 +287,6 @@ router.post(
     }
 );
 
+mail();
+
 module.exports = router;
