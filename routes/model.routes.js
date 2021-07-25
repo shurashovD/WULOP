@@ -8,14 +8,14 @@ const path = require('path');
 const config = require('config');
 
 async function mail() {
-    let transporter = nodemailer.createTransport({
-        host: "imap.yandex.com",
-        port: 993,
-        secure: "SSL", // true for 465, false for other ports
+    const transporter = nodemailer.createTransport({
+        host: "smtp.yandex.ru",
+        port: 465,
+        secure: true, // true for 465, false for other ports
         auth: {
             user: "shurashovd@yandex.ru", // generated ethereal user
-            pass: "P-4s533mx", // generated ethereal password
-        },
+            pass: "P-4s533mx" // generated ethereal password
+        }
     });
     const info = await transporter.sendMail({
         from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
