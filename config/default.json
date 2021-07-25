@@ -5,7 +5,7 @@
     "smtp": {
         "host": "imap.yandex.com",
         "port": "993",
-        "secure": false,
+        "secure": "SSL",
         "auth": {
             "user": "shurashovd@yandex.ru",
             "pass": "P-4s533mx"

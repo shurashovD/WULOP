@@ -3,11 +3,11 @@ const AuthMiddleWare = require('../middleware/auth.middleware');
 const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
-//const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 const path = require('path');
 const config = require('config');
 
-/*async function mail() {
+async function mail() {
     const transporter = nodemailer.createTransport(config.smtp);
     const info = await transporter.sendMail({
         from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
@@ -17,7 +17,7 @@ const config = require('config');
         html: "<b>Hello world?</b>", // html body
     });
     console.log(info);
-}*/
+}
 
 const router = Router();
 
