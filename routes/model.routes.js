@@ -14,7 +14,7 @@ async function mail() {
         secure: true, // true for 465, false for other ports
         auth: {
             user: "shurashovd@yandex.ru", // generated ethereal user
-            pass: "P-4s533mx" // generated ethereal password
+            pass: "" // generated ethereal password
         }
     });
     const info = await transporter.sendMail({
