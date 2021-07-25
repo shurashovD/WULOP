@@ -8,7 +8,15 @@ const path = require('path');
 const config = require('config');
 
 async function mail() {
-    const transporter = nodemailer.createTransport(config.smtp);
+    let transporter = nodemailer.createTransport({
+        host: "imap.yandex.com",
+        port: 993,
+        secure: "SSL", // true for 465, false for other ports
+        auth: {
+            user: "shurashovd@yandex.ru", // generated ethereal user
+            pass: "P-4s533mx", // generated ethereal password
+        },
+    });
     const info = await transporter.sendMail({
         from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
         to: "shurashovd@yandex.ru", // list of receivers
