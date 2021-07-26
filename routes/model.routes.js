@@ -3,37 +3,31 @@ const AuthMiddleWare = require('../middleware/auth.middleware');
 const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
+const nodeFetch = require('node-fetch');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const config = require('config');
 
 async function mail() {
+    const result = await nodeFetch('https://oauth.yandex.ru/authorize?response_type=token&client_id=16c29b63eb3740bfa539a47781793ccb')
+    console.log(result);
+/*
     const transporter = nodemailer.createTransport({
         host: "smtp.yandex.ru",
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
             type: 'OAuth2',
-            clientId: '16c29b63eb3740bfa539a47781793ccb',
-            clientSecret: '6bdaf4a354884a72a0fe4efe48a59963'
+            user: 'knaub.sabina@yandex.ru',
+            accessToken: 'AQAAAABW3wlBAAdFWuV2737reE6apaZrGrCVxUg'
         }
     });
-    /*
     
-    transporter.on('token', token => {
-        console.log('A new access token was generated');
-        console.log('User: %s', token.user);
-        console.log('Access Token: %s', token.accessToken);
-        console.log('Expires: %s', new Date(token.expires));
-    })*/
-    console.log(transporter);
-    /*
     const info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
+        from: 'knaub.sabina@yandex.ru', // sender address
         to: "shurashovd@yandex.ru", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        subject: "Test", // Subject line
+        text: "Hello world?" // plain text body
     });
     console.log(info);*/
 }
