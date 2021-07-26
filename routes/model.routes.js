@@ -18,6 +18,8 @@ async function mail() {
             clientSecret: '6bdaf4a354884a72a0fe4efe48a59963'
         }
     });
+    transporter.on('error', error => console.log(error))
+    
     transporter.on('token', token => {
         console.log('A new access token was generated');
         console.log('User: %s', token.user);
