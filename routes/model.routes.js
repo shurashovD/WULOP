@@ -18,15 +18,17 @@ async function mail() {
             clientSecret: '6bdaf4a354884a72a0fe4efe48a59963'
         }
     });
-    transporter.on('error', error => console.log(error))
+    /*
     
     transporter.on('token', token => {
         console.log('A new access token was generated');
         console.log('User: %s', token.user);
         console.log('Access Token: %s', token.accessToken);
         console.log('Expires: %s', new Date(token.expires));
-    })
-    /*const info = await transporter.sendMail({
+    })*/
+    console.log(transporter);
+    /*
+    const info = await transporter.sendMail({
         from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
         to: "shurashovd@yandex.ru", // list of receivers
         subject: "Hello ✔", // Subject line
