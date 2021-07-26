@@ -13,7 +13,7 @@ async function mail() {
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "knaub.sabina", // generated ethereal user
+            user: "knaub.sabina@yandex.ru", // generated ethereal user
             pass: "GQZSabina" // generated ethereal password
         }
     });
