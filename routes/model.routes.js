@@ -3,29 +3,8 @@ const AuthMiddleWare = require('../middleware/auth.middleware');
 const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
-const nodemailer = require('nodemailer');
 const path = require('path');
 const config = require('config');
-
-async function mail() {
-    const transporter = nodemailer.createTransport({
-        host: "smtp.yandex.ru",
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-            user: "knaub.sabina@yandex.ru", // generated ethereal user
-            pass: "GQZSabina" // generated ethereal password
-        }
-    });
-    const info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
-        to: "shurashovd@yandex.ru", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
-    });
-    console.log(info);
-}
 
 const router = Router();
 
@@ -191,19 +170,8 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            if ( model.scores.length == 7 ) {
+            if ( model.scores.length == 2 ) {
                 model.completed = true;
-                if ( model.mail ) {
-                    const transporter = nodemailer.createTransport(config.smtp);
-                    const info = await transporter.sendMail({
-                        from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
-                        to: "shurashovd@yandex.ru", // list of receivers
-                        subject: "Hello ✔", // Subject line
-                        text: "Hello world?", // plain text body
-                        html: "<b>Hello world?</b>", // html body
-                    });
-                    console.log(info);
-                }
             }
 
             await model.save();
