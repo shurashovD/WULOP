@@ -9,7 +9,7 @@ const path = require('path');
 const config = require('config');
 
 async function mail() {
-    const result = await nodeFetch('https://oauth.yandex.ru/authorize?response_type=token&client_id=16c29b63eb3740bfa539a47781793ccb')
+    const result = await nodeFetch('https://oauth.yandex.ru/authorize?response_type=code&client_id=16c29b63eb3740bfa539a47781793ccb')
     console.log(result);
 /*
     const transporter = nodemailer.createTransport({
@@ -196,7 +196,7 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            if ( model.scores.length == 7 ) {
+            if ( model.scores.length == 2 ) {
                 model.completed = true;
                 if ( model.mail ) {
                     const transporter = nodemailer.createTransport(config.smtp);
