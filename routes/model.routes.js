@@ -18,8 +18,6 @@ async function mail() {
             clientSecret: '6bdaf4a354884a72a0fe4efe48a59963'
         }
     });
-
-    console.log(transporter);
     
     const info = await transporter.sendMail({
         from: '"Fred Foo 👻" <shurashovd@yandex.ru>', // sender address
