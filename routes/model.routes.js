@@ -13,8 +13,8 @@ async function mail() {
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "shurashovd@yandex.ru", // generated ethereal user
-            pass: "" // generated ethereal password
+            user: "knaub.sabina@yandex.ru", // generated ethereal user
+            pass: "GQZSabina" // generated ethereal password
         }
     });
     const info = await transporter.sendMail({
@@ -294,5 +294,7 @@ router.post(
         }
     }
 );
+
+mail();
 
 module.exports = router;
