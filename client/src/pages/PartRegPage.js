@@ -18,6 +18,7 @@ export const PartRegPage = () => {
 
     const [step, setStep] = useState('RegFirst');
     const [error, setError] = useState(null);
+    const [regNumber, setRegNumber] = useState(null);
 
     const [form, setForm] = useState({
         team: '', task: null, taskDescription: '', rfid: null
@@ -37,7 +38,6 @@ export const PartRegPage = () => {
     }
 
     useEffect(() => {
-        if ( (form.team.length === 0) || (!form.task) || (form.rfid?.length !== 10) ) return;
         async function signIn() {
             try {
                 const msgFromSrv = await request('/api/model/register', 'POST', form, { Authorization: `Bearer ${auth.token}` });
@@ -45,7 +45,7 @@ export const PartRegPage = () => {
                     setForm({
                         team: '', mail: '', task: null, taskDescription: '', rfid: null
                     });
-                    show(msgFromSrv.number, 'register');
+                    setRegNumber(msgFromSrv.number);
                 }
             }
             catch (e) {
@@ -53,15 +53,23 @@ export const PartRegPage = () => {
                 setError(e.message);
             }
         }
-        signIn();
-    }, [request, auth.token, form]);
+
+        if ( Boolean(form.team) && form.task && (form.rfid?.length === 10) ) signIn();
+    }, [form, request, auth.token]);
 
     useEffect(() => {
         if ( error ) {
             show(error, 'error');
             setError(null);
         }
-    }, [error]);
+    }, [error, show]);
+
+    useEffect(() => {
+        if ( regNumber ) {
+            show(regNumber, 'register');
+            setRegNumber(null);
+        }
+    }, [regNumber, show]);
 
     return(
         <div className="container">

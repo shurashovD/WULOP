@@ -38,7 +38,7 @@ export const RegListPage = () => {
             show(error, 'error');
             setError(null);
         }
-    });
+    }, [error, show]);
 
     return (
         <div className="container">

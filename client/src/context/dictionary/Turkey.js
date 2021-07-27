@@ -1,4 +1,5 @@
 export const Turkey = {
+    logoTitle: 'SOFTWARE provided by Sabina Knaub',
     enterYourDetails: 'Enter your details',
     login: 'Login',
     pass: 'Password',

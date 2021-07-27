@@ -1,4 +1,5 @@
 export const Russian = {
+    logoTitle: 'ПО предоставляет Sabina Knaub',
     enterYourDetails: 'Введите свои данные',
     login: 'Логин',
     pass: 'Пароль',

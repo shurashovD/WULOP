@@ -1,4 +1,5 @@
 export const Franch = {
+    logoTitle: 'Le programme est présenté par Sabina Knaub',
     enterYourDetails: 'Entrez vos coordonnées',
     login: 'Login',
     pass: 'Le mot de passe',

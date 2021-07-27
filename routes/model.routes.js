@@ -176,7 +176,7 @@ router.post(
 
             await model.save();
 
-            res.json({ success: true, message: 'Ваша оценка принята' });
+            res.json({ success: true, message: 'SUCCESS' });
         }
         catch (e) {
             console.log(e);

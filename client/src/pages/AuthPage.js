@@ -4,8 +4,8 @@ import { useHttp } from '../hooks/http.hook';
 import logoPlaceholder from '../img/login-bgi.svg';
 import passPlaceholder from '../img/pass-bgi.svg';
 import btnBgi from '../img/login-btn-bgi.svg';
-import footerImg from '../img/footer-img.png';
 import { DictionaryContext } from '../context/dictionary/dictionaryContext';
+import { Footer } from '../components/Footer';
 
 export const AuthPage = () => {
     const auth = useContext(AuthContext);
@@ -144,9 +144,7 @@ export const AuthPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="fixed-bottom d-none">
-                <img src={footerImg} alt="Footer" className="float-end" width="600"/>
-            </div>
+            <Footer />
         </div>
     );
 }

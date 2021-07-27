@@ -1,4 +1,5 @@
 export const Deutch = {
+    logoTitle: 'Software bietet Sabina Knaub',
     enterYourDetails: 'Geben Sie Ihre Daten ein',
     login: 'Anmeldung',
     pass: 'Passwort',

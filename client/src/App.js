@@ -1,5 +1,4 @@
 import { BrowserRouter } from 'react-router-dom';
-import { Footer } from './components/Footer';
 import { AuthContext } from './context/AuthContext';
 import { ModalState } from './context/modal/ModalState';
 import { Modal } from './components/Modal';
@@ -35,7 +34,6 @@ const App = () => {
                         <div>
                             { routes }
                         </div>
-                        { isAuthenticated && <Footer /> }
                       </main>
                     </BrowserRouter>
                   </ScoreboardState>

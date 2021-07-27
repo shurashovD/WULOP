@@ -34,7 +34,7 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
 
     const btnClickHandler = event => {
         setForm({...form, task: event.target.value, taskDescription: event.target.textContent });
-        setBtnClasses(tasks.map((item, index) => (index.toString() === event.target.getAttribute('data-index')) ? "btn-secondary" : "btn-primary"));
+        setBtnClasses(tasks.map((_, index) => (index.toString() === event.target.getAttribute('data-index')) ? "btn-secondary" : "btn-primary"));
     }
 
     return (
@@ -87,6 +87,7 @@ export const RegFirst = ({ form, setForm, btnClkHandler }) => {
             <div className="row mt-4">
                 <button
                     className="btn btn-primary text-white col-3 mx-auto btn-shadow"
+                    disabled={ !(Boolean(form.team) && Boolean(form.task)) }
                     onClick={btnClkHandler}
                 >
                     {dg('register')}
