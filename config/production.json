@@ -2,13 +2,20 @@
     "port": 8080,
     "mongoUri": "mongodb+srv://shurashovd:GQZye3tD@cluster0.syilk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     "jwtSecret": "WULOP_2021",
-    "smtp": {
-        "host": "imap.yandex.com",
-        "port": "993",
-        "secure": "SSL",
+    "transport": {
+        "host": "smtp.yandex.ru",
+        "port": "465",
+        "secure": "true",
         "auth": {
-            "user": "shurashovd@yandex.ru",
-            "pass": "P-4s533mx"
+            "type": "OAuth2",
+            "user": "knaub.sabina@yandex.ru",
+            "accessToken": "AQAAAABW3wlBAAdFWuV2737reE6apaZrGrCVxUg"
         }
+    },
+    "mailData": {
+        "from": "knaub.sabina@yandex.ru",
+        "to": "knaub.sabina@yandex.ru",
+        "subject": "WULOP",
+        "text": "This message contains voice comments by referees."
     }
 }

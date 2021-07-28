@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useReducer } from "react";
 import { RefereeContext } from "./RefereeContext";
 import { refereeReducer } from "./refereeReducer";
 import { useHttp } from "../../hooks/http.hook";
-import { REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_ONE_SRC, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
+import { REFEREE_RESET_STATE, REFEREE_SET_INVALID, REFEREE_SET_LOAD, REFEREE_SET_MEDIA, REFEREE_SET_MIC_BUSY, REFEREE_SET_MODEL, REFEREE_SET_ONE_SRC, REFEREE_SET_PHOTO, REFEREE_SET_REC, REFEREE_SET_SCORES, REFEREE_SET_SRC, REFEREE_SET_UPDREC } from "./types";
 import { AuthContext } from "../AuthContext";
 import { ModalContext } from "../../context/modal/modalContext";
 import { TasksContext } from "../tasks/TasksContext";
@@ -153,6 +153,8 @@ export const RefereeState = ({children}) => {
 
     const photoCloseHandler = () => dispatch({ type: REFEREE_SET_PHOTO, value: false });
 
+    const resetState = () => dispatch({ type: REFEREE_RESET_STATE })
+
     useEffect(() => {
         dispatch({ type: REFEREE_SET_MEDIA, audio: mic });
     }, [mic]);
@@ -166,7 +168,6 @@ export const RefereeState = ({children}) => {
     }, [recording]);
 
     useEffect(() => {
-        if ( !track ) return;
         async function sendComment() {
             const file = new File([track], `${auth.description}_${performance.now()}.webm`);
             const formData = new FormData();
@@ -183,13 +184,13 @@ export const RefereeState = ({children}) => {
             }
             return true;
         }
-        sendComment();
+        if ( track && auth.description ) sendComment();
     }, [track, auth.description, auth.token, show, uplaodFile]);
 
     return (
         <RefereeContext.Provider value={{
             refereeState: state,
-            rfidCallback, scoreChangeHandler, recBtnHandler, readyBtnHandler, cancelBtnHandler, photoBtnHandler, photoCloseHandler
+            rfidCallback, scoreChangeHandler, recBtnHandler, readyBtnHandler, cancelBtnHandler, photoBtnHandler, photoCloseHandler, resetState
         }}>
             {children}
         </RefereeContext.Provider>

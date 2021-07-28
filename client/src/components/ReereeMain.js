@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { DictionaryContext } from '../context/dictionary/dictionaryContext';
 import { RefereeContext } from '../context/referee/RefereeContext';
 import { TasksContext } from '../context/tasks/TasksContext';
@@ -8,13 +8,17 @@ export const RefereeMain = () => {
     const { tasks } = useContext(TasksContext);
     const dictionary = useContext(DictionaryContext);
     const {dg} = dictionary;
-    const { refereeState, scoreChangeHandler, recBtnHandler, readyBtnHandler, cancelBtnHandler, photoBtnHandler } = useContext(RefereeContext);
+    const { refereeState, scoreChangeHandler, recBtnHandler, readyBtnHandler, cancelBtnHandler, photoBtnHandler, resetState } = useContext(RefereeContext);
     const { audio, model, scores, record, micBusy, sources, amount, invalid } = refereeState;
 
     const numberValidator = event => {
         if ( event.key === 'Backspace' ) return;
         if ( isNaN(event.key) ) event.preventDefault();
     }
+
+    useEffect(() => {
+        return resetState
+    }, [])
 
     return (
         <div className="container mt-3">

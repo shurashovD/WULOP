@@ -21,7 +21,7 @@ export const PartRegPage = () => {
     const [regNumber, setRegNumber] = useState(null);
 
     const [form, setForm] = useState({
-        team: '', task: null, taskDescription: '', rfid: null
+        team: '', mail: '', task: null, taskDescription: '', rfid: null
     });
 
     const navLinks = [

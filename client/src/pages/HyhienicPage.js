@@ -10,7 +10,7 @@ export const HyhienicPage = () => {
     const { tasks } = useContext(TasksContext);
     const dictionary = useContext(DictionaryContext);
     const {dg} = dictionary;
-    const { hyhienicState, initAudio, setNumber, setRecord, setHyhienicalScore, readyHandler } = useContext(HyhienicalContext);
+    const { hyhienicState, initAudio, setNumber, setRecord, setHyhienicalScore, readyHandler, resetState } = useContext(HyhienicalContext);
     const { number, model, modelLoading, record, updateRecord, audio, loading } = hyhienicState;
 
     const numberValidator = event => {
@@ -19,6 +19,10 @@ export const HyhienicPage = () => {
         if ( event.target.value.length === 3 ) event.preventDefault();
         if ( (event.target.value.length === 0) && (event.key === '0') ) event.preventDefault();
         if ( isNaN(event.key) ) event.preventDefault();
+
+        if ( (event.target.name === 'score') && ( event.target.value === '0' ) ) {
+            event.target.value = '';
+        }
 
         if ( (event.target.name === 'score') && (parseInt(event.target.value + event.key) > 100) ) {
             event.preventDefault();
@@ -32,6 +36,10 @@ export const HyhienicPage = () => {
     }
 
     useEffect(initAudio, [initAudio]);
+
+    useEffect(() => {
+        return resetState
+    }, [])
 
     return(
         <div className="container min-vh-100 d-flex flex-column justify-content-start">

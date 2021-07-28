@@ -5,7 +5,7 @@ import { DictionaryContext } from "../dictionary/dictionaryContext";
 import { ModalContext } from "../modal/modalContext";
 import { HyhienicalContext } from "./hyhienicalContext";
 import { hyhienicalReducer } from "./hyhienicalReducer";
-import { HYHIENIC_REC, HYHIENIC_SET_LOADING, HYHIENIC_SET_MODEL, HYHIENIC_SET_MODEL_LOADING, HYHIENIC_SET_NUMBER, HYHIENIC_SET_REC, HYHIENIC_SET_SCORE, HYHIENIC_SET_UPDREC } from "./types";
+import { HYHIENIC_REC, HYHIENIC_RESET_STATE, HYHIENIC_SET_LOADING, HYHIENIC_SET_MODEL, HYHIENIC_SET_MODEL_LOADING, HYHIENIC_SET_NUMBER, HYHIENIC_SET_REC, HYHIENIC_SET_SCORE, HYHIENIC_SET_UPDREC } from "./types";
 
 export const HyhienicalState = ({children}) => {
     const auth = useContext(AuthContext);
@@ -37,7 +37,9 @@ export const HyhienicalState = ({children}) => {
         try {
             const modelString = await uplaodFile('/api/model/hyhienical-comment', formData, { Authorization: `Bearer ${auth.token}` });
             dispatch({ type: HYHIENIC_SET_UPDREC, value: false });
-            setModel(JSON.parse(modelString.model));
+            const model = JSON.parse(modelString.model);
+            model.hyhienicalScore = state.model.hyhienicalScore
+            setModel(model);
         }
         catch (e) {
             dispatch({ type: HYHIENIC_SET_UPDREC, value: false });
@@ -103,10 +105,14 @@ export const HyhienicalState = ({children}) => {
         }
     }, [state.model, request, auth.token, show, setModel, dg]);
 
+    const resetState = useCallback(() => {
+        dispatch({ type: HYHIENIC_RESET_STATE })
+    }, [])
+
     return (
         <HyhienicalContext.Provider value={{
             hyhienicState: state,
-            initAudio, setNumber, setRecord, setHyhienicalScore, readyHandler
+            initAudio, setNumber, setRecord, setHyhienicalScore, readyHandler, resetState
         }}>
             {children}
         </HyhienicalContext.Provider>

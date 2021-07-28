@@ -4,9 +4,30 @@ const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
 const path = require('path');
+const nodemailer = require('nodemailer');
 const config = require('config');
 
 const router = Router();
+
+const mail = async ({ team, mail, scores, beforePhoto, afterPhoto, hyhienicalComment }) => {
+    const attachments = [];
+    scores.forEach(score => {
+        const { refereeScores } = score;
+        refereeScores.forEach(item => {
+            if ( Boolean(item.commentLink) )
+            attachments.push({ path: item.commentLink });
+        });
+    });
+
+    if ( Boolean(beforePhoto) ) attachments.push({ path: beforePhoto });
+    if ( Boolean(afterPhoto) ) attachments.push({ path: afterPhoto });
+    if ( Boolean(hyhienicalComment) ) attachments.push({ path: hyhienicalComment });
+
+    const transporter = nodemailer.createTransport(config.transport);
+
+    await transporter.sendMail({...config.mailData, attachments, text: config.mailData.text + ' Part ' + team + '.' });
+    if (mail) await transporter.sendMail({...config.mailData, attachments, to: mail });
+}
 
 router.post(
     '/register',
@@ -172,6 +193,7 @@ router.post(
 
             if ( model.scores.length == 2 ) {
                 model.completed = true;
+                mail(model);
             }
 
             await model.save();
@@ -253,12 +275,12 @@ router.post(
             const model = await Model.findById(modelId);
             if ( !model ) res.status(400).json({ message: 'Участник не определен' });
 
-            model.hyhienicalScore = parseInt(score);
+            model.hyhienicalScore = parseInt(score || 0);
             await model.save();
             res.json({ success: true });
         }
         catch (e) {
-            res.status(500).json({ message: 'Что-то пошло не так...' });
+            res.status(500).json({ message: e.message || 'Что-то пошло не так...' });
         }
     }
 );
