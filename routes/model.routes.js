@@ -191,7 +191,9 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            if ( model.scores.length == 2 ) {
+            const refereeCount = [7, 7, 7, 7, 7]
+
+            if ( model.scores.length == refereeCount[model.task-1] ) {
                 model.completed = true;
                 mail(model);
             }
