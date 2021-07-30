@@ -191,7 +191,7 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            const refereeCount = [7, 7, 7, 7, 7]
+            const refereeCount = [9, 9, 9, 9, 9]
 
             if ( model.scores.length == refereeCount[model.task-1] ) {
                 model.completed = true;
@@ -219,14 +219,18 @@ router.post(
             const profiles = await Profile.find();
             
             const result = models.map(model => {
-                const { team, scores, hyhienicalScore } = model;
+                const { team, scores } = model;
+                let hyhienicalScore = 0;
                 const scoresResult = scores.map(score => {
                     const { amount, refereeId } = score;
-                    return {
-                        referee: profiles.find(profile => profile._id == refereeId).descriptor,
-                        amount
+                    if ( refereeId !== '6103d4b29102219a33da5f77' ) {
+                        return {
+                            referee: profiles.find(profile => profile._id == refereeId).descriptor,
+                            amount
+                        }
                     }
-                });
+                    else hyhienicalScore = amount;
+                }).filter(item => Boolean(item));
                 return { team, scoresResult, hyhienicalScore};
             });
 

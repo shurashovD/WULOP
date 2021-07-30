@@ -71,7 +71,7 @@ export const ScoreboardPage = () => {
                                             className="col ms-auto"
                                             style={{ width: '12.5%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
                                         >
-                                        <span className="text-primary text-center lh-sm">Hyhienical</span>
+                                        <span className="text-primary text-center lh-sm">X-referee</span>
                                         <span className="text-primary text-center">{item.hyhienicalScore}</span>
                                     </div> }
                                 </div>
