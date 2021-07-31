@@ -191,7 +191,7 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            const refereeCount = [8, 8, 8, 8, 8]
+            const refereeCount = [7, 7, 7, 7, 7]
 
             if ( model.scores.length == refereeCount[model.task-1] ) {
                 model.completed = true;
@@ -223,7 +223,7 @@ router.post(
                 let hyhienicalScore = 0;
                 const scoresResult = scores.map(score => {
                     const { amount, refereeId } = score;
-                    if ( refereeId !== '6103d4b29102219a33da5f77' ) {
+                    if ( refereeId !== '60aa8f41602e693664ea06dd' ) {
                         return {
                             referee: profiles.find(profile => profile._id == refereeId).descriptor,
                             amount
