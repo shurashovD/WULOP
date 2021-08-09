@@ -10,6 +10,7 @@ import { TasksState } from './context/tasks/TasksState';
 import { useAuth } from './hooks/auth.hook';
 import { useRoutes } from './routes';
 import { DictionaryState } from './context/dictionary/DictionaryState';
+import { PreviousState } from './context/previous/PreviousState';
 
 const App = () => {
   const { login, logout, token, device, description, deviceId, lang } = useAuth();
@@ -28,14 +29,16 @@ const App = () => {
               <HyhienicalState>
                 <RefereeState>
                   <ScoreboardState>
-                    <BrowserRouter>
-                      <Modal />
-                      <main className="min-vh-100">
-                        <div>
-                            { routes }
-                        </div>
-                      </main>
-                    </BrowserRouter>
+                    <PreviousState>
+                      <BrowserRouter>
+                        <Modal />
+                        <main className="min-vh-100">
+                          <div>
+                              { routes }
+                          </div>
+                        </main>
+                      </BrowserRouter>
+                    </PreviousState>
                   </ScoreboardState>
                 </RefereeState>
               </HyhienicalState>

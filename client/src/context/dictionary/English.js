@@ -85,5 +85,19 @@ export const English = {
     traumatizationLipsD: 'The presence of planted points, edema, punctures in the form of dashes, obvious deepening, and exits beyond the contour of the lips is evaluated. The fewer of these features the higher the score',
     complexityOfWorkLipsD: 'The complexity of the technique of introducing the pigment is evaluated, as well as the skin of the model, the use of color transitions.',
     evennessOfProcrastination: 'Evenness of the procrastination',
-    evennessOfProcrastinationD: 'The same number of pixels along the contour, the general appearance of the shading.'
+    evennessOfProcrastinationD: 'The same number of pixels along the contour, the general appearance of the shading.',
+    hyhienicClean: 'Cleanness',
+    hyhienicTiming: 'Timing',
+    skinComplex: 'Skin complex',
+    scarring: 'Scarring',
+    densityHair: 'Hair density',
+    lipsSkinQuality: 'Skin quality',
+    lipsForm: 'Form',
+    lipsAssimetry: 'Assimetry',
+    arrowSkinQuality: 'Skin quality',
+    arrowEyelid: 'Openness of the eyelid',
+    arrowAssimetry: 'Assimetry',
+    microbladingSkinQuality: 'Skin quality',
+    microbladingForm: 'Density and fullness of the form',
+    microbladingAssimetry: 'Assimetry'
 };

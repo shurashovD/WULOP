@@ -85,5 +85,19 @@ export const Franch = {
     traumatizationLipsD: 'La présence de rougeur, gonflement ou autre inflammation provoquée par la pigmentation sont évalués. Moins ils sont visibles, plus le score sera élevé',
     complexityOfWorkLipsD: 'La technique d’application de pigment, les couleurs utilisées et leur transition sur la zone pigmentée seront évaluées.',
     evennessOfProcrastination: "L'uniformité de la couleur",
-    evennessOfProcrastinationD: 'La saturation de contour, l’application homogène du pigment, l’aspect général du travail effectué'
+    evennessOfProcrastinationD: 'La saturation de contour, l’application homogène du pigment, l’aspect général du travail effectué',
+    hyhienicClean: 'Cleanness',
+    hyhienicTiming: 'Timing',
+    skinComplex: 'Skin complex',
+    scarring: 'Scarring',
+    densityHair: 'Hair density',
+    lipsSkinQuality: 'Skin quality',
+    lipsForm: 'Form',
+    lipsAssimetry: 'Assimetry',
+    arrowSkinQuality: 'Skin quality',
+    arrowEyelid: 'Openness of the eyelid',
+    arrowAssimetry: 'Assimetry',
+    microbladingSkinQuality: 'Skin quality',
+    microbladingForm: 'Density and fullness of the form',
+    microbladingAssimetry: 'Assimetry'
 };

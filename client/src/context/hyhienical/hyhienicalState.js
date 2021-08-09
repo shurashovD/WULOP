@@ -81,7 +81,7 @@ export const HyhienicalState = ({children}) => {
         getModel(number);
     }
 
-    const setHyhienicalScore = event => dispatch({ type: HYHIENIC_SET_SCORE, score: event.target.value });
+    const setHyhienicalScore = ({event, testId}) => dispatch({ type: HYHIENIC_SET_SCORE, score: event.target.value, testId });
     
     const readyHandler = useCallback( async () => {
         dispatch({ type: HYHIENIC_SET_LOADING });

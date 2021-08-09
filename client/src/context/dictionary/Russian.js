@@ -86,4 +86,18 @@ export const Russian = {
     complexityOfWorkLipsD: 'Оценивается сложность техники введения пигмента, а также кожа модели, использование перехода цветов.',
     evennessOfProcrastination: 'Равномерность прокраса',
     evennessOfProcrastinationD: 'Одинаковое количество пикселей по контуру, общий вид растушевки.',
+    hyhienicClean: 'Саннормы и чистота',
+    hyhienicTiming: 'Соблюдение тайминга',
+    skinComplex: 'Сложность кожи',
+    scarring: 'Наличие шрамов',
+    densityHair: 'Густота роста волос',
+    lipsSkinQuality: 'Качество кожи - наличие шрамов и сухости',
+    lipsForm: 'Форма - чем меньше и не "рекламнее" губы, тем больше балл',
+    lipsAssimetry: 'Ассиметрия',
+    arrowSkinQuality: 'Качество кожи',
+    arrowEyelid: 'Открытость века',
+    arrowAssimetry: 'Ассиметрия',
+    microbladingSkinQuality: 'Качество кожи',
+    microbladingForm: 'Густота и полноценность формы',
+    microbladingAssimetry: 'Ассиметрия'
 };

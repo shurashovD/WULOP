@@ -85,5 +85,19 @@ export const Turkey = {
     traumatizationLipsD: 'Ekilen noktalar, dudakların aşırı şişmesi, çizgi benzeri pikseller, ciltte kızarıklık, lenf, iksir veya kan salgılanması, morluklar gereksiz travma olarak kabul edilir. Bu işaretler ne kadar az olursa, puan o kadar yüksek olur.',
     complexityOfWorkLipsD: 'Cildin kalitesi, yara izlerinin ve kuruluğun varlığıdır. Şekil - dudaklar ne kadar küçük ve "reklam" değilse, puan o kadar yüksek olur. Asimetri.',
     evennessOfProcrastination: 'Rengin tekdüzeliği',
-    evennessOfProcrastinationD: 'Pigment leke değil, eşit şekilde uzanmalıdır! Lekeli alanların daha açık veya daha yoğun alanları olmamalıdır. Dudakların derisi pikselden görünmemelidir. Dudakların köşeleri, tüm dudaklar kadar eşit şekilde boyanmalıdır. Dudakların kapanma çizgisi boyunca leke tüm dudaklarda olduğu gibi aynı olmalıdır.'
+    evennessOfProcrastinationD: 'Pigment leke değil, eşit şekilde uzanmalıdır! Lekeli alanların daha açık veya daha yoğun alanları olmamalıdır. Dudakların derisi pikselden görünmemelidir. Dudakların köşeleri, tüm dudaklar kadar eşit şekilde boyanmalıdır. Dudakların kapanma çizgisi boyunca leke tüm dudaklarda olduğu gibi aynı olmalıdır.',
+    hyhienicClean: 'Cleanness',
+    hyhienicTiming: 'Timing',
+    skinComplex: 'Skin complex',
+    scarring: 'Scarring',
+    densityHair: 'Hair density',
+    lipsSkinQuality: 'Skin quality',
+    lipsForm: 'Form',
+    lipsAssimetry: 'Assimetry',
+    arrowSkinQuality: 'Skin quality',
+    arrowEyelid: 'Openness of the eyelid',
+    arrowAssimetry: 'Assimetry',
+    microbladingSkinQuality: 'Skin quality',
+    microbladingForm: 'Density and fullness of the form',
+    microbladingAssimetry: 'Assimetry'
 };

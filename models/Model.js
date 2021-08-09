@@ -6,6 +6,16 @@ const RefereeScoreSchema = new Schema({
     value: { type: Number }
 });
 
+const HyhienicalScoreSchema = new Schema({
+    testId: { type: Number },
+    value: { type: Number }
+});
+
+const PrevScoreSchema = new Schema({
+    testId: { type: Number },
+    value: { type: Number }
+})
+
 const ScoreSchema = new Schema({
     amount: { type: Number },
     refereeId: { type: String },
@@ -20,8 +30,10 @@ const schemaModel = new Schema({
     number: { type: Number, required: true },
     beforePhoto: { type: String },
     afterPhoto: { type: String },
-    hyhienicalScore: { type: Number },
+    hyhienicalScore: { type: Array, of: HyhienicalScoreSchema },
     hyhienicalComment: { type: String },
+    prevComment: { type: String },
+    prevScore: { type: Array, of: PrevScoreSchema },
     scores: { type: Array, of: ScoreSchema },
     completed: { type: Boolean, default: false }
 });

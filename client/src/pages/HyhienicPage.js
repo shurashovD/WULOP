@@ -60,19 +60,22 @@ export const HyhienicPage = () => {
             </div>
             { !model && <p className="text-dark text-center mt-3">- - -</p> }
             { model && <p className="text-dark text-center fs-3 mt-3">{dg('participant')}: №{model.number}. {dg('category')}: “{tasks[model.task-1].name}”</p> }
-            { model && <p className="text-dark text-center mt-4">{dg('enterYourPoints')}</p> }
-            { model && (<div className="row ">
-                <div className="col-2 mx-auto">
-                    <input
-                        type="text"
-                        name="score"
-                        className="form-control text-center"
-                        value={model?.hyhienicalScore ?? 0}
-                        onKeyDown={numberValidator}
-                        onChange={setHyhienicalScore}
-                    />
-                </div>
-            </div>)}
+            { model &&
+                tasks[model.task-1].hyhienicCriterion.map(item => {
+                    return (<div className="row" key={item.id}>
+                        <div className="col-2 mx-auto" key={item.id}>
+                            <p className="text-dark text-center mt-3 mb-0">{item.test}</p>
+                            <input
+                                type="text"
+                                name="score"
+                                className="form-control text-center"
+                                value={model?.hyhienicalScore?.find(el => el.testId === item.id)?.value ?? 0}
+                                onKeyDown={numberValidator}
+                                onChange={event => setHyhienicalScore({event, testId: item.id})}
+                            />
+                        </div>
+                    </div>)
+                })}
             { model && (<div className="row mt-4">
                 <div className="col-2 mx-auto">
                     <button

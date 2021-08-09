@@ -8,8 +8,8 @@ export const TasksState = ({children}) => {
     const {dg} = dictionary;
 
     const Hair = {
-    name: dg('hairTechnology'),
-    list: [
+        name: dg('hairTechnology'),
+        list: [
             {
                 id: 1,
                 test: dg('harmonyOfImage'),
@@ -59,6 +59,30 @@ export const TasksState = ({children}) => {
                 id: 10,
                 test: dg('hairStyling'),
                 dect: dg('hairStylingD'),
+            }
+        ],
+        hyhienicCriterion: [
+            {
+                id: 48,
+                test: dg('hyhienicClean')
+            },
+            {
+                id: 49,
+                test: dg('hyhienicTiming')
+            }
+        ],
+        preCriterion: [
+            {
+                id: 50,
+                test: dg('skinComplex')
+            },
+            {
+                id: 51,
+                test: dg('scarring')
+            },
+            {
+                id: 52,
+                test: dg('densityHair')
             }
         ]
     }
@@ -116,6 +140,30 @@ export const TasksState = ({children}) => {
                 test: dg('hairStyling'),
                 dect: dg('hairStylingD'),
             }
+        ],
+        hyhienicCriterion: [
+            {
+                id: 48,
+                test: dg('hyhienicClean')
+            },
+            {
+                id: 49,
+                test: dg('hyhienicTiming')
+            }
+        ],
+        preCriterion: [
+            {
+                id: 59,
+                test: dg('microbladingSkinQuality')
+            },
+            {
+                id: 60,
+                test: dg('microbladingAssimetry')
+            },
+            {
+                id: 61,
+                test: dg('microbladingForm')
+            }
         ]
     }
 
@@ -167,6 +215,30 @@ export const TasksState = ({children}) => {
                 test: dg('evennessOfProcrastination'),
                 dect: dg('evennessOfProcrastinationD')
             }
+        ],
+        hyhienicCriterion: [
+            {
+                id: 48,
+                test: dg('hyhienicClean')
+            },
+            {
+                id: 49,
+                test: dg('hyhienicTiming')
+            }
+        ],
+        preCriterion: [
+            {
+                id: 53,
+                test: dg('lipsSkinQuality')
+            },
+            {
+                id: 54,
+                test: dg('lipsForm')
+            },
+            {
+                id: 55,
+                test: dg('lipsAssimetry')
+            }
         ]
     }
 
@@ -213,6 +285,30 @@ export const TasksState = ({children}) => {
                 test: dg('traumatization'),
                 dect: dg('traumatizationArrowD')
             },
+        ],
+        hyhienicCriterion: [
+            {
+                id: 48,
+                test: dg('hyhienicClean')
+            },
+            {
+                id: 49,
+                test: dg('hyhienicTiming')
+            }
+        ],
+        preCriterion: [
+            {
+                id: 56,
+                test: dg('arrowSkinQuality')
+            },
+            {
+                id: 57,
+                test: dg('arrowAssimetry')
+            },
+            {
+                id: 58,
+                test: dg('arrowEyelid')
+            }
         ]
     }
 
@@ -253,6 +349,30 @@ export const TasksState = ({children}) => {
                 id: 47,
                 test: dg('Gradient'),
                 dect: dg('GradientD'),
+            }
+        ],
+        hyhienicCriterion: [
+            {
+                id: 48,
+                test: dg('hyhienicClean')
+            },
+            {
+                id: 49,
+                test: dg('hyhienicTiming')
+            }
+        ],
+        preCriterion: [
+            {
+                id: 50,
+                test: dg('skinComplex')
+            },
+            {
+                id: 51,
+                test: dg('scarring')
+            },
+            {
+                id: 52,
+                test: dg('densityHair')
             }
         ]
     }

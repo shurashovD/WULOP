@@ -45,8 +45,7 @@ export const ScoreboardPage = () => {
             </div> }
             {
                 result.map((item, index) => {
-                    let total = item.scoresResult.reduce((sum, current) => sum + current.amount, 0);
-                    if ( mode === 'RES' ) total += item.hyhienicalScore ?? 0;
+                    const total = item.scoresResult.reduce((sum, current) => sum + current.amount, ( mode === 'RES' ) ? item.hyhienical ?? 0 : 0);
                     return (
                         <div className="row border border-primary rounded text-primary fw-bold mt-1" key={index}>
                             <span className="col-1 d-flex justify-content-center align-items-center border-end border-primary">{index + 1}</span>

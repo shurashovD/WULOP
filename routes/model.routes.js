@@ -56,9 +56,9 @@ router.post(
             const allModels = await Model.find();
             if ( allModels?.length !== 0 ) {
                 number = allModels.sort((a, b) => b.number - a.number)[0].number + 1;
-            }           
+            }
 
-            const model = new Model({ team, mail, task, rfid, number });
+            const model = new Model({ team, mail, task, rfid, number, hyhienicalScore: [] });
             await model.save();
 
             res.json({ number, success: true });
@@ -210,6 +210,28 @@ router.post(
 );
 
 router.post(
+    '/save-previous-score',
+    AuthMiddleWare,
+    async (req, res) => {
+        try {
+            const { model } = req.body
+            const baseModel = await Model.findById(model._id)
+            if ( !baseModel ) return res.status(400).json({ message: 'Ошибка получения участника' })
+
+            baseModel.prevComment = model.prevComment
+            baseModel.prevScore = model.prevScore
+            await baseModel.save()
+
+            res.json({ success: true, message: 'SUCCESS' })
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500).json({ message: 'Что-то пошло не так...' });
+        }
+    }
+);
+
+router.post(
     '/get-score',
     AuthMiddleWare,
     async (req, res) => {
@@ -219,19 +241,16 @@ router.post(
             const profiles = await Profile.find();
             
             const result = models.map(model => {
-                const { team, scores } = model;
-                let hyhienicalScore = 0;
+                const { team, scores, hyhienicalScore } = model;
+                const hyhienical = hyhienicalScore.reduce((sum, item) => sum + item.value, 0);
                 const scoresResult = scores.map(score => {
                     const { amount, refereeId } = score;
-                    if ( refereeId !== '60aa8f41602e693664ea06dd' ) {
-                        return {
-                            referee: profiles.find(profile => profile._id == refereeId).descriptor,
-                            amount
-                        }
+                    return {
+                        referee: profiles.find(profile => profile._id == refereeId).descriptor,
+                        amount
                     }
-                    else hyhienicalScore = amount;
                 }).filter(item => Boolean(item));
-                return { team, scoresResult, hyhienicalScore};
+                return { team, scoresResult, hyhienical};
             });
 
             res.json({ result });
@@ -281,7 +300,7 @@ router.post(
             const model = await Model.findById(modelId);
             if ( !model ) res.status(400).json({ message: 'Участник не определен' });
 
-            model.hyhienicalScore = parseInt(score || 0);
+            model.hyhienicalScore = score;
             await model.save();
             res.json({ success: true });
         }

@@ -4,6 +4,7 @@ import { AuthPage } from './pages/AuthPage';
 import { HyhienicPage } from './pages/HyhienicPage';
 import { PartRegPage } from './pages/PartRegPage';
 import { PhotoPage } from './pages/PhotoPage';
+import { PrevPage } from './pages/PrevPage';
 import { RefereePage } from './pages/RefereePage';
 import { RegListPage } from './pages/RegListPage';
 import { ScoreboardPage } from './pages/ScoreboardPage';
@@ -32,6 +33,14 @@ export const useRoutes = deviceType => {
                     <PhotoPage />
                 </Route>
                 <Redirect to="/photosession" />
+            </Switch>
+        );
+        case 'PREVIOUS-REFEREE-TABLE' : return (
+            <Switch>
+                <Route path="/prev" exact>
+                    <PrevPage />
+                </Route>
+                <Redirect to="/prev" />
             </Switch>
         );
         case 'HYHIENIC' : return (

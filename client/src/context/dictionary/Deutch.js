@@ -85,5 +85,19 @@ export const Deutch = {
     traumatizationLipsD: 'Das Vorhandensein von tiefgestochene Punkten, Schwellungen, Einstichen in Form von Bindestrichen, eine klare Vertiefung, Ausgänge für die Kontur der Lippen wird bewertet Je weniger dieser Zeichen desto höher die Punktzahl',
     complexityOfWorkLipsD: 'Bewertet die Komplexität der Technik der Einführung von Pigment, sowie die Haut des Modells, die Verwendung von Farbübergang.',
     evennessOfProcrastination: 'Gleichmäßigkeit der Farbe',
-    evennessOfProcrastinationD: 'Die gleiche Anzahl von Pixeln entlang der Kontur, das allgemeine Aussehen der Schattierung.'
+    evennessOfProcrastinationD: 'Die gleiche Anzahl von Pixeln entlang der Kontur, das allgemeine Aussehen der Schattierung.',
+    hyhienicClean: 'Cleanness',
+    hyhienicTiming: 'Timing',
+    skinComplex: 'Skin complex',
+    scarring: 'Scarring',
+    densityHair: 'Hair density',
+    lipsSkinQuality: 'Skin quality',
+    lipsForm: 'Form',
+    lipsAssimetry: 'Assimetry',
+    arrowSkinQuality: 'Skin quality',
+    arrowEyelid: 'Openness of the eyelid',
+    arrowAssimetry: 'Assimetry',
+    microbladingSkinQuality: 'Skin quality',
+    microbladingForm: 'Density and fullness of the form',
+    microbladingAssimetry: 'Assimetry'
 };

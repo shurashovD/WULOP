@@ -52,13 +52,10 @@ export const ScoreboardState = ({children}) => {
                 if (isNaN(parseInt(state.task))) return;
                 const msgFromSrv = await request('/api/model/get-score', 'POST', { task: (state.task+1) }, { Authorization: `Bearer ${auth.token}` });
                 const result = msgFromSrv.result.sort((a, b) => {
-                    let aSum = a.scoresResult.reduce((sum, current) => sum + current.amount, 0);
-                    if ( state.mode === 'RES' ) aSum += a.hyhienicalScore ?? 0;
-                    let bSum = b.scoresResult.reduce((sum, current) => sum + current.amount, 0);
-                    if ( state.mode === 'RES' ) bSum += b.hyhienicalScore ?? 0;
+                    const aSum = a.scoresResult.reduce((sum, current) => sum + current.amount, ( state.mode === 'RES' ) ? a.hyhienical ?? 0 : 0);
+                    const bSum = b.scoresResult.reduce((sum, current) => sum + current.amount, ( state.mode === 'RES' ) ? b.hyhienical ?? 0 : 0);
                     return bSum - aSum;
                 });
-                console.log(result);
                 dispatch({ type: SCOREBOARD_SET_RESULT, result });
             }
             catch (e) {
