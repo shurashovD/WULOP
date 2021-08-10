@@ -12,7 +12,14 @@ export const PreviousMain = () => {
 
     const numberValidator = event => {
         if ( event.key === 'Backspace' ) return
-        if ( isNaN(event.key) ) event.preventDefault()
+        if ( isNaN(event.key) ) {
+            event.preventDefault()
+            return
+        }
+        if ( event.target.value === '0' ) {
+            event.target.value = ''
+            return
+        }
     }
 
     useEffect(() => {
