@@ -3,6 +3,7 @@ const AuthMiddleWare = require('../middleware/auth.middleware');
 const {check, validationResult} = require('express-validator');
 const Model = require('../models/Model');
 const Profile = require('../models/Profile');
+const Settings = require('../models/Settings');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const config = require('config');
@@ -29,6 +30,7 @@ const mail = async ({ team, mail, scores, beforePhoto, afterPhoto, hyhienicalCom
     if (mail) await transporter.sendMail({...config.mailData, attachments, to: mail });
 }
 
+// register
 router.post(
     '/register',
     AuthMiddleWare,
@@ -69,6 +71,7 @@ router.post(
     }
 );
 
+// get-model
 router.post(
     '/get-model',
     AuthMiddleWare,
@@ -77,6 +80,15 @@ router.post(
             const {rfid} = req.body;
             const candidate = await Model.findOne({ rfid, completed: false });
             if ( !candidate ) return res.status(400).json({ message: 'Ошибка получения участника' });
+
+            const profile = await Profile.findById(req.profileId)
+            if ( profile.type.split('-')[0] === 'REFEREE' ) {
+                const settings = await Settings.findOne({ number: candidate.task-1 })
+                if ( !settings.referees.some(item => item === req.profileId) ) {
+                    return res.status(400).json({ message: profile.descriptor + ' не оценивает текущую модель' });
+                }
+            }
+
             res.json({ model: JSON.stringify(candidate) });
         }
         catch (e) {
@@ -85,6 +97,7 @@ router.post(
     }
 );
 
+// get-model-by-number
 router.post(
     '/get-model-by-number',
     AuthMiddleWare,
@@ -101,6 +114,7 @@ router.post(
     }
 );
 
+// insert-photo
 router.post(
     '/insert-photo',
     AuthMiddleWare,
@@ -123,6 +137,7 @@ router.post(
     }
 );
 
+// hyhienical-comment
 router.post(
     '/hyhienical-comment',
     AuthMiddleWare,
@@ -144,6 +159,7 @@ router.post(
     }
 );
 
+// referee-comment
 router.post(
     '/referee-comment',
     AuthMiddleWare,
@@ -158,6 +174,7 @@ router.post(
     }
 );
 
+// get-photo
 router.post(
     '/get-photo',
     AuthMiddleWare,
@@ -173,6 +190,7 @@ router.post(
     }
 );
 
+// save-score
 router.post(
     '/save-score',
     AuthMiddleWare,
@@ -191,11 +209,10 @@ router.post(
                 refereeScores: JSON.parse(refereeScores)
             });
 
-            const refereeCount = [7, 7, 7, 7, 6]
-
-            if ( model.scores.length == refereeCount[model.task-1] ) {
-                model.completed = true;
-                mail(model);
+            const settings = await Settings.findOne({ number: model.task-1 })
+            if (settings.referees.every(item => model.scores.some(score => score.refereeId === item))) {
+                model.completed = true
+                mail(model)
             }
 
             await model.save();
@@ -209,6 +226,7 @@ router.post(
     }
 );
 
+// save-previous-score
 router.post(
     '/save-previous-score',
     AuthMiddleWare,
@@ -231,27 +249,53 @@ router.post(
     }
 );
 
+// get-score
 router.post(
     '/get-score',
     AuthMiddleWare,
     async (req, res) => {
         try {
-            const {task} = req.body;
-            const models = await Model.find({task, completed: true});
-            const profiles = await Profile.find();
+            const {task, inter} = req.body
+            const models = await Model.find({ task })
+            const profiles = await Profile.find()
+            const settings = await Settings.findOne({ number: task-1 })
+
+            const completeModels = models.map(model => {
+                if (settings.referees.every(item => model.scores.some(score => score.refereeId === item)))
+                return model
+            }).filter(item => Boolean(item))
+
+            const Referees = inter ? settings.referees : settings.referees.concat(settings.hideReferees)
             
-            const result = models.map(model => {
-                const { team, scores, hyhienicalScore } = model;
-                const hyhienical = hyhienicalScore.reduce((sum, item) => sum + item.value, 0);
-                const scoresResult = scores.map(score => {
-                    const { amount, refereeId } = score;
-                    return {
-                        referee: profiles.find(profile => profile._id == refereeId).descriptor,
-                        amount
+            const result = completeModels.map(model => {
+                const { team, scores, hyhienicalScore, prevScore } = model
+                const hyhienical = hyhienicalScore?.reduce((sum, item) => +sum + item.value, 0) ?? 0
+                const previous = prevScore?.reduce((sum, item) => +sum + item.value, 0) ?? 0
+                const scoresResult = Referees.map(refereeId => {
+                    const referee = profiles.find(profile => profile._id == refereeId)
+                    if ( referee.type.split('-')[0] === 'REFEREE' ) {
+                        const amount = scores.find(score => score.refereeId === refereeId).amount
+                        return {
+                            referee: referee.descriptor,
+                            amount
+                        }
                     }
-                }).filter(item => Boolean(item));
-                return { team, scoresResult, hyhienical};
-            });
+                    if ( referee.type.split('-')[0] === 'HYHIENIC' ) {
+                        return {
+                            referee: referee.descriptor,
+                            amount: hyhienical
+                        }
+                    }
+                    if ( referee.type.split('-')[0] === 'PREVIOUS' ) {
+                        return {
+                            referee: referee.descriptor,
+                            amount: previous
+                        }
+                    }
+                })
+                const total = scoresResult.reduce((sum, item) => +sum + item.amount, 0)
+                return { team, scoresResult, total }
+            }).sort((a, b) => a.total - b.total)
 
             res.json({ result });
         }
@@ -262,6 +306,7 @@ router.post(
     }
 );
 
+// get-models-by-task
 router.post(
     '/get-models-by-task',
     AuthMiddleWare,
@@ -277,10 +322,11 @@ router.post(
     }
 );
 
+// get-models
 router.post(
     '/get-models',
     AuthMiddleWare,
-    async (req, res) => {
+    async (_, res) => {
         try {
             const models = await Model.find();
             res.json({ models });
@@ -291,6 +337,7 @@ router.post(
     }
 );
 
+// set-hyhienic
 router.post(
     '/set-hyhienic',
     AuthMiddleWare,

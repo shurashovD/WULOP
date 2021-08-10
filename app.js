@@ -8,7 +8,7 @@ const PORT = config.get('port') || 5000;
 const app = express();
 
 const storageConfig = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req, res, cb) => {
         cb (null, "uploads");
     },
     filename: (req, file, cb) => {
@@ -23,7 +23,7 @@ const start = async () => {
             useUnifiedTopology: true,
             useCreateIndex: true
         });
-        app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`));
+        app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`))
     }
     catch (e) {
         console.log('Server error', e.message);
@@ -62,4 +62,3 @@ app.get('*', (req, res) => {
 });
 
 start();
-

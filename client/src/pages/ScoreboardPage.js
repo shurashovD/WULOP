@@ -45,34 +45,27 @@ export const ScoreboardPage = () => {
             </div> }
             {
                 result.map((item, index) => {
-                    const total = item.scoresResult.reduce((sum, current) => sum + current.amount, ( mode === 'RES' ) ? item.hyhienical ?? 0 : 0);
+                    const { team, scoresResult, total } = item
                     return (
                         <div className="row border border-primary rounded text-primary fw-bold mt-1" key={index}>
                             <span className="col-1 d-flex justify-content-center align-items-center border-end border-primary">{index + 1}</span>
-                            <span className="col-2 d-flex justify-content-center align-items-center border-end border-primary">{item.team}</span>
+                            <span className="col-2 d-flex justify-content-center align-items-center border-end border-primary">{team}</span>
                             <div className="col-7 border-end border-primary py-2 fw-normal">
                                 <div className="row">
                                     {
-                                        item.scoresResult.map((score, i) => {
+                                        scoresResult.map((score, i, arr) => {
                                             return (
                                                 <div
                                                     className="col"
-                                                    style={{ width: '12.5%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+                                                    style={{ width: 100 / arr.length + '%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
                                                     key={String(index) + String(i)}
                                                 >
                                                     <span className="text-primary text-center lh-sm">{score.referee}</span>
                                                     <span className="text-primary text-center">{score.amount}</span>
                                                 </div>
-                                            );
+                                            )
                                         })
                                     }
-                                    { mode === 'RES' && <div
-                                            className="col ms-auto"
-                                            style={{ width: '12.5%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-                                        >
-                                        <span className="text-primary text-center lh-sm">X-referee</span>
-                                        <span className="text-primary text-center">{item.hyhienicalScore}</span>
-                                    </div> }
                                 </div>
                             </div>
                             <span className="col-2 d-flex justify-content-center align-items-center">{total}</span>
