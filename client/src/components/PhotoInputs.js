@@ -45,24 +45,24 @@ export const PhotoInputs = () => {
             </div>
             <div className="row my-4">
                 <div className="col-1"></div>
-                <div className={"col-4 d-flex justify-content-center border border-primary rounded px-0 " + (!beforePhoto && "py-5")}>
+                <div className={"col-4 border border-primary rounded px-0 " + (!beforePhoto && "py-5 d-flex justify-content-center")}>
                     {
                         !beforeImgLoading &&
                         <img
                             src={beforePhoto ?? noneImg}
-                            className={"img-fluid rounded " + (beforePhoto ? "col-12" : "opacity col-5")}
+                            className={"img-thumbnail rounded " + (beforePhoto ? "col-12" : "opacity col-5")}
                             alt="before"
                         />
                     }
                     { beforeImgLoading && <div className="spinner-border text-primary m-auto" /> }
                 </div>
                 <div className="col-2"></div>
-                <div className={"col-4 d-flex justify-content-center border border-primary rounded px-0 " + (!afterPhoto && "py-5")}>
+                <div className={"col-4 border border-primary rounded px-0 " + (!afterPhoto && "py-5 d-flex justify-content-center")}>
                     {
                         !afterImgLoading &&
                         <img
                             src={afterPhoto ?? noneImg}
-                            className={"img-fluid rounded " + (afterPhoto ? "col-12" : "opacity col-5")}
+                            className={"img-thumbnail rounded " + (afterPhoto ? "col-12" : "opacity col-5")}
                             alt="after"
                         />
                     }

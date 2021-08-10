@@ -42,7 +42,7 @@ export const HyhienicPage = () => {
     }, [])
 
     return(
-        <div className="container min-vh-100 d-flex flex-column justify-content-start">
+        <div className="container d-flex flex-column justify-content-start">
             { loading && <Loader /> }
             <NavBar />
             <p className="text-dark fw-bold text-center mt-4">{dg('hygienist')}</p>
@@ -94,7 +94,7 @@ export const HyhienicPage = () => {
                 </div>) }
             </div>
             { modelLoading && <div className="spinner-border text-primary m-auto"></div> }
-            <div className="row mt-auto mb-3">
+            { model && <div className="row mt-5 mb-3">
                 <div className="col-2 mx-auto">
                     <button
                         className="btn btn-primary btn-shadow text-white text-uppercase container"
@@ -103,7 +103,7 @@ export const HyhienicPage = () => {
                         {dg('done')}
                     </button>
                 </div>
-            </div>
+            </div> }
         </div>
     );
 }
