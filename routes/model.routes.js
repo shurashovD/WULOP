@@ -295,7 +295,7 @@ router.post(
                 })
                 const total = scoresResult.reduce((sum, item) => +sum + item.amount, 0)
                 return { team, scoresResult, total }
-            }).sort((a, b) => a.total - b.total)
+            }).sort((a, b) => b.total - a.total)
 
             res.json({ result });
         }
