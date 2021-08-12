@@ -50,7 +50,7 @@ export const TasksState = ({children}) => {
                 test: dg('traumatization'),
                 dect: dg('traumatizationD'),
             },
-            {
+            /*{
                 id: 9,
                 test: dg('complexityOfWork'),
                 dect: dg('complexityOfWorkD'),
@@ -59,7 +59,7 @@ export const TasksState = ({children}) => {
                 id: 10,
                 test: dg('hairStyling'),
                 dect: dg('hairStylingD'),
-            }
+            }*/
         ],
         hyhienicCriterion: [
             {
@@ -130,7 +130,7 @@ export const TasksState = ({children}) => {
                 test: dg('traumatization'),
                 dect: dg('traumatizationD'),
             },
-            {
+            /*{
                 id: 19,
                 test: dg('complexityOfWork'),
                 dect: dg('complexityOfWorkD'),
@@ -139,7 +139,7 @@ export const TasksState = ({children}) => {
                 id: 20,
                 test: dg('hairStyling'),
                 dect: dg('hairStylingD'),
-            }
+            }*/
         ],
         hyhienicCriterion: [
             {
