@@ -7,6 +7,7 @@ import { PhotoPage } from './pages/PhotoPage';
 import { PrevPage } from './pages/PrevPage';
 import { RefereePage } from './pages/RefereePage';
 import { RegListPage } from './pages/RegListPage';
+import { Result } from './pages/Result';
 import { ScoreboardPage } from './pages/ScoreboardPage';
 import { Yakushkina } from './pages/Yakushkina';
 
@@ -81,8 +82,8 @@ export const useRoutes = deviceType => {
                 <Route path="/" exact>
                     <AuthPage />
                 </Route>
-                <Route path="/yakushkina" exact>
-                    <Yakushkina />
+                <Route path="/result" exact>
+                    <Result />
                 </Route>
                 <Redirect to="/" />
             </Switch>

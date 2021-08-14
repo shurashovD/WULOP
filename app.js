@@ -43,7 +43,7 @@ app.use('/api/device', require('./routes/device.routes'));
 
 app.use('/api/model', require('./routes/model.routes'));
 
-app.use('/result', require('./routes/result.routes'))
+app.use('/api/result', require('./routes/result.routes'))
 
 if ( process.env.NODE_ENV === 'production' ) {
     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
