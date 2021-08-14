@@ -41,4 +41,20 @@ router.post(
 
 });
 
+router.post(
+    '/get-referee-by-id',
+    AuthMiddleWare,
+    async (req, res) => {
+    try {
+        const { refereeId } = req.body
+        const referee = await Profile.findById(refereeId)
+        if ( !referee ) return res.status(400).json({ message: 'Судья не найден' })
+        res.status(200).json(referee)
+    }
+    catch (e) {
+        res.status(500).json({ message: 'Что-то пошло не так...' })
+    }
+
+});
+
 module.exports = router;

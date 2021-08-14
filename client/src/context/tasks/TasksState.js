@@ -205,11 +205,11 @@ export const TasksState = ({children}) => {
                 test: dg('traumatization'),
                 dect: dg('traumatizationLipsD')
             },
-            {
+            /*{
                 id: 28,
                 test: dg('complexityOfWork'),
                 dect: dg('complexityOfWorkLipsD'),
-            },
+            },*/
             {
                 id: 29,
                 test: dg('evennessOfProcrastination'),

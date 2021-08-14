@@ -8,6 +8,7 @@ import { PrevPage } from './pages/PrevPage';
 import { RefereePage } from './pages/RefereePage';
 import { RegListPage } from './pages/RegListPage';
 import { ScoreboardPage } from './pages/ScoreboardPage';
+import { Yakushkina } from './pages/Yakushkina';
 
 export const useRoutes = deviceType => {
     let device = deviceType;
@@ -16,6 +17,14 @@ export const useRoutes = deviceType => {
         if ( deviceSplit[0] === 'REFEREE') device = 'REFEREE';
     }
     switch (device) {
+        case 'ADMINISTRATOR' : return (
+            <Switch>
+                <Route path="/yakushkina" exact>
+                    <Yakushkina />
+                </Route>
+                <Redirect to="/yakushkina" />
+            </Switch>
+        );
         case 'REGISTER' : return (
             <Switch>
                 <Route path="/registration" exact>
@@ -71,6 +80,9 @@ export const useRoutes = deviceType => {
             <Switch>
                 <Route path="/" exact>
                     <AuthPage />
+                </Route>
+                <Route path="/yakushkina" exact>
+                    <Yakushkina />
                 </Route>
                 <Redirect to="/" />
             </Switch>

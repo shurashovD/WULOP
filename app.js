@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const config = require('config');
 const path = require('path');
+const nodemailer = require('nodemailer');
+const model = require('./models/Model')
 
 const PORT = config.get('port') || 5000; 
 const app = express();
@@ -16,6 +18,26 @@ const storageConfig = multer.diskStorage({
     }
 });
 
+const mail = async ({ team, mail, scores, beforePhoto, afterPhoto, hyhienicalComment }) => {
+    const attachments = [];
+    scores.forEach(score => {
+        const { refereeScores } = score;
+        refereeScores.forEach(item => {
+            if ( Boolean(item.commentLink) )
+            attachments.push({ path: item.commentLink });
+        });
+    });
+
+    if ( Boolean(beforePhoto) ) attachments.push({ path: beforePhoto });
+    if ( Boolean(afterPhoto) ) attachments.push({ path: afterPhoto });
+    if ( Boolean(hyhienicalComment) ) attachments.push({ path: hyhienicalComment });
+
+    const transporter = nodemailer.createTransport(config.transport);
+
+    //await transporter.sendMail({...config.mailData, attachments, text: config.mailData.text + ' Part ' + team + '.' });
+    await transporter.sendMail({...config.mailData, attachments, to: 'drobot.pm@mail.ru' });
+}
+
 const start = async () => {
     try {
         await mongoose.connect(config.get('mongoUri'), {
@@ -24,6 +46,8 @@ const start = async () => {
             useCreateIndex: true
         });
         app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`))
+        const models = await model.find()
+        models.forEach(model => mail(model))
     }
     catch (e) {
         console.log('Server error', e.message);
