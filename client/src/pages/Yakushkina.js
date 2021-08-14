@@ -11,6 +11,7 @@ export const Yakushkina = () => {
     const [model, setModel] = useState()
     const [referees, setReferees] = useState([])
     const [rows, setRows] = useState([])
+    const [prevRows, setPrevRows] = useState([])
 
     const getModel = useCallback( async () => {
         try {
@@ -48,12 +49,25 @@ export const Yakushkina = () => {
         if ( referees.length === 5 ) {
             const refereeTasks = tasks.reduce((arr, current) => arr.concat(current.list), [])
             const result = model.scores[0].refereeScores.map(({testId}) => {
-                test = refereeTasks.find(item => item.id === testId).test
+                const test = refereeTasks.find(item => String(item.id) === String(testId)).test
+                const scores = referees.map(({_id}) => 
+                    model.scores.find(item => String(item.refereeId) === String(_id)).refereeScores.find(item => String(item.testId) === String(testId)).value
+                )
+                scores.push(scores.reduce((sum, item) => sum + item, 0))
                 return {
-                    testId, test 
+                    testId, test, scores
                 }
             })
             setRows(result)
+
+            const prevTasks = tasks.reduce((arr, current) => arr.concat(current.preCriterion), [])
+            const prevResult = model.prevScore.map(({testId, value}) => {
+                const test = prevTasks.find(item => String(item.id) === String(testId)).test
+                return {
+                    testId, test, value
+                }
+            })
+            setPrevRows(prevResult)
         }
     }, [referees, model])
 
@@ -61,29 +75,28 @@ export const Yakushkina = () => {
         <div className="py-2">
             <NavBar />
             <p className="text-primary text-center">{model?.team}</p>
-            {(referees.length === 5) && (
+            {(rows.length > 0) && (
                 <table className="table">
                     <thead>
                         <tr>
                             <th scope="col" className="text-primary">#</th>
-                            {referees.map(referee => (<th className="text-primary" key={referee._id}>{referee.descriptor}</th>))}
+                            {referees.map(referee => (<th className="text-primary text-center" key={referee._id}>{referee.descriptor}</th>))}
+                            <th scope="col" className="text-primary">Сумма</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {model.scores.map(score => {
-                            const { refereeId, refereeScores } = score
+                        {rows.map(({testId, test, scores}) => {
                             return (
-                                <tr key={score._id}>
-                                    <th>1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                <tr key={testId} className="text-primary">
+                                    <th>{test}</th>
+                                    { scores.map((score, index) => <td key={testId + '_' + index} className="text-center">{score}</td>) }
                                 </tr>
                             )
                         })}
                     </tbody>
                 </table>
             )}
+            <p className="text-primary text-end">Предварительный итог {rows.reduce((sum, item) => sum + item.scores[item.scores.length-1], 0)}</p>
         </div>
     )
 }
